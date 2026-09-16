@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const ready = [
+	{
+		name: 'Conduit',
+		host: 'conduit.almasix.com',
+		pip: 'almasix[conduit]',
+		blurb: 'Livewire-parity reactive components — server-driven UI with almasix.conduit.',
+		docs: 'https://docs.almasix.com/conduit/',
+		github: 'https://github.com/almasix-dev/conduit',
+		pypi: 'https://pypi.org/project/almasix-conduit/',
+	},
+	{
+		name: 'Inertia',
+		host: 'inertia.almasix.com',
+		pip: 'almasix[inertia]',
+		blurb: 'Official Inertia.js adapter for Vue, React, and Svelte — plus Node SSR.',
+		docs: 'https://docs.almasix.com/inertia/',
+		github: 'https://github.com/almasix-dev/inertia',
+		pypi: 'https://pypi.org/project/almasix-inertia/',
+	},
+];
+
+const soon = [
+	{
+		name: 'Permission',
+		pip: 'almasix-permission',
+		blurb: 'Roles and permissions on PyPI. Package docs page still cooking — use the README for now.',
+		github: 'https://github.com/almasix-dev/almasix-permission',
+		pypi: 'https://pypi.org/project/almasix-permission/',
+	},
+	{
+		name: 'Sonar',
+		pip: '@almasix/sonar',
+		blurb: 'Browser client for Almasix realtime. Not on npm yet; broadcasting lives in the framework docs.',
+		github: 'https://github.com/almasix-dev/sonar',
+		docs: 'https://docs.almasix.com/broadcasting/',
+	},
+];
+---
+
+<BaseLayout
+	title="Packages"
+	description="First-party Almasix packages — Conduit, Inertia, and more — with docs, install lines, and source."
+>
+	<main id="main">
+		<section class="page-hero" aria-labelledby="packages-heading">
+			<div class="wrap page-hero-inner">
+				<p class="page-kicker mono">almasix.com/packages</p>
+				<h1 id="packages-heading">First-party packages</h1>
+				<p>
+					Installable extensions with their own repos. Docs that already ship live under
+					<code class="mono">docs.almasix.com</code>; package hosts like
+					<code class="mono">conduit.almasix.com</code> redirect there once DNS is attached.
+				</p>
+			</div>
+		</section>
+
+		<section class="section" aria-labelledby="ready-heading">
+			<div class="wrap">
+				<h2 id="ready-heading">Ready now</h2>
+				<p class="lead">Public docs and PyPI releases — start here.</p>
+				<ul class="pkg-list">
+					{
+						ready.map((pkg) => (
+							<li>
+								<div class="pkg-head">
+									<span class="pkg-name">{pkg.name}</span>
+									<code class="mono pkg-host">{pkg.host}</code>
+								</div>
+								<p class="pkg-blurb">{pkg.blurb}</p>
+								<pre class="pkg-install"><code>pip install '{pkg.pip}'</code></pre>
+								<div class="pkg-links">
+									<a href={pkg.docs}>Docs →</a>
+									<a href={pkg.github}>GitHub</a>
+									<a href={pkg.pypi}>PyPI</a>
+								</div>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+
+		<section class="section section-muted" aria-labelledby="soon-heading">
+			<div class="wrap">
+				<h2 id="soon-heading">On deck</h2>
+				<p class="lead">
+					Shipped or incubating — package subdomains wait until each has real public docs.
+				</p>
+				<ul class="pkg-list pkg-list-soon">
+					{
+						soon.map((pkg) => (
+							<li>
+								<div class="pkg-head">
+									<span class="pkg-name">{pkg.name}</span>
+									<code class="mono pkg-host">docs pending</code>
+								</div>
+								<p class="pkg-blurb">{pkg.blurb}</p>
+								<pre class="pkg-install"><code>{pkg.pip.startsWith('@') ? `npm i ${pkg.pip}` : `pip install ${pkg.pip}`}</code></pre>
+								<div class="pkg-links">
+									{pkg.docs ? <a href={pkg.docs}>Related docs →</a> : null}
+									<a href={pkg.github}>GitHub</a>
+									{pkg.pypi ? <a href={pkg.pypi}>PyPI</a> : null}
+								</div>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+
+		<section class="section" aria-labelledby="editors-heading">
+			<div class="wrap">
+				<h2 id="editors-heading">Editor support</h2>
+				<p class="lead">
+					VS Code / Cursor and JetBrains plugins stay under framework docs — not package hosts.
+				</p>
+				<p class="pkg-editors">
+					<a href="https://docs.almasix.com/editor-setup/">Editor setup →</a>
+					<span aria-hidden="true"> · </span>
+					<a href="https://github.com/almasix-dev/almasix-vscode">VS Code</a>
+					<span aria-hidden="true"> · </span>
+					<a href="https://github.com/almasix-dev/almasix-idea">JetBrains</a>
+				</p>
+			</div>
+		</section>
+	</main>
+</BaseLayout>
