@@ -192,14 +192,14 @@ code,
 
 @media (min-width: 960px) {
 	.hero-stage {
-		grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.15fr);
-		gap: 2.75rem;
-		padding-block: 3.5rem 4.5rem;
+		grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.25fr);
+		gap: 2.5rem;
+		padding-block: 3.25rem 4.25rem;
 	}
 }
 
 .hero-copy {
-	max-width: 36rem;
+	max-width: 34rem;
 }
 
 .hero-brand {
@@ -237,131 +237,179 @@ code,
 
 .hero-preview {
 	margin: 0;
+	width: min(100%, 42rem);
+	justify-self: stretch;
 	animation: preview-in 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
 }
 
-.hero-preview-cap {
-	margin: 0.85rem 0 0;
-	font-size: 0.88rem;
-	color: var(--muted);
-	letter-spacing: 0.01em;
+@media (min-width: 960px) {
+	.hero-preview {
+		width: 100%;
+		max-width: none;
+	}
 }
 
 .term {
 	--term-bg: #17120f;
+	--term-fg: #f3ebe4;
+	--slide-ms: 3.4s;
 	position: relative;
-	border-radius: 0.85rem;
+	border-radius: 1rem;
 	background: var(--term-bg);
+	color: var(--term-fg);
 	overflow: hidden;
 	border: 1px solid rgba(255, 255, 255, 0.08);
 	box-shadow:
 		0 1px 0 rgba(255, 255, 255, 0.06) inset,
-		0 28px 60px -28px rgba(28, 20, 17, 0.55);
+		0 32px 70px -28px rgba(28, 20, 17, 0.58);
 	animation: term-glow 6s ease-in-out infinite alternate;
 }
 
-.term-open {
-	display: block;
-	width: 100%;
-	padding: 0;
-	border: 0;
-	background: transparent;
-	cursor: zoom-in;
-	text-align: left;
-	color: inherit;
-	border-radius: inherit;
+.term-chrome {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.85rem 1.15rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+	background: rgba(255, 255, 255, 0.03);
 }
 
-.term-open:focus-visible {
-	outline: 2px solid var(--orange);
-	outline-offset: 3px;
+.term-chrome span {
+	width: 0.62rem;
+	height: 0.62rem;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.18);
 }
 
-.term-video {
-	display: block;
-	width: 100%;
-	height: auto;
-	aspect-ratio: 1100 / 640;
-	object-fit: cover;
-	object-position: top center;
-	background: var(--term-bg);
-	pointer-events: none;
+.term-chrome span:nth-child(1) {
+	background: #e07a5a;
 }
 
-.term-expand {
-	position: absolute;
-	right: 0.75rem;
-	bottom: 0.75rem;
-	padding: 0.35rem 0.65rem;
-	border-radius: 0.4rem;
-	font-size: 0.75rem;
-	font-weight: 600;
+.term-chrome span:nth-child(2) {
+	background: #d4a574;
+}
+
+.term-chrome span:nth-child(3) {
+	background: #6a9b7a;
+}
+
+.term-title {
+	margin-left: auto;
+	font-size: 0.78rem;
+	color: rgba(243, 235, 228, 0.45);
 	letter-spacing: 0.02em;
-	color: #fffaf6;
-	background: rgba(28, 20, 17, 0.72);
-	border: 1px solid rgba(255, 255, 255, 0.12);
-	pointer-events: none;
 }
 
-/* —— Lightbox —— */
+.term-viewport {
+	position: relative;
+	min-height: 18.5rem;
+	padding: 1.35rem 1.45rem 1.55rem;
+	font-family: var(--mono);
+	font-size: clamp(0.92rem, 1.35vw, 1.05rem);
+	line-height: 1.6;
+}
 
-.lightbox {
-	position: fixed;
-	inset: 0;
-	z-index: 80;
-	width: min(100% - 2rem, 68rem);
-	max-width: 68rem;
-	margin: auto;
+@media (min-width: 960px) {
+	.term-viewport {
+		min-height: 20.5rem;
+		padding: 1.55rem 1.65rem 1.75rem;
+	}
+}
+
+.term-slide {
+	position: absolute;
+	inset: 1.35rem 1.45rem 1.55rem;
+	margin: 0;
+	opacity: 0;
+	transform: translateY(0.65rem) scale(0.985);
+	pointer-events: none;
+	transition:
+		opacity 0.4s ease,
+		transform 0.4s ease;
+}
+
+@media (min-width: 960px) {
+	.term-slide {
+		inset: 1.55rem 1.65rem 1.75rem;
+	}
+}
+
+.term-slide.is-active {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+	pointer-events: auto;
+}
+
+.term-slide.is-typing > * {
+	opacity: 0;
+	animation: line-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+	animation-delay: calc(var(--i, 0) * 0.18s + 0.08s);
+}
+
+.term-slide p {
+	margin: 0 0 0.45rem;
+}
+
+.term-prompt {
+	color: var(--orange-soft);
+	margin-right: 0.45rem;
+}
+
+.term-dim {
+	color: rgba(243, 235, 228, 0.55);
+}
+
+.term-ok {
+	color: #8fbf9a;
+}
+
+.term-hi {
+	color: #7eb6d9;
+	font-weight: 500;
+}
+
+.term-code,
+.term-tree {
+	margin: 0.35rem 0 0;
 	padding: 0;
 	border: 0;
 	background: transparent;
-	color: inherit;
+	color: rgba(243, 235, 228, 0.9);
+	font-size: inherit;
+	line-height: 1.5;
+	overflow: auto;
 }
 
-.lightbox::backdrop {
-	background: rgba(18, 12, 10, 0.72);
-	backdrop-filter: blur(10px);
+.term-code {
+	color: #cfe6f5;
 }
 
-.lightbox-dialog {
-	position: relative;
-	width: 100%;
-	margin: 0;
-	padding: 0;
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	border-radius: 0.9rem;
-	background: #17120f;
-	box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.65);
-	overflow: hidden;
+.term-cursor {
+	display: inline-block;
+	width: 0.55rem;
+	height: 1.05em;
+	margin-top: 0.35rem;
+	vertical-align: text-bottom;
+	background: var(--orange-soft);
+	animation: blink 1s steps(1) infinite;
 }
 
-.lightbox-video {
+.term-progress {
+	height: 2px;
+	background: rgba(255, 255, 255, 0.06);
+}
+
+.term-progress span {
 	display: block;
+	height: 100%;
 	width: 100%;
-	height: auto;
-	max-height: min(78vh, 44rem);
-	background: #17120f;
+	transform-origin: left center;
+	transform: scaleX(0);
+	background: linear-gradient(90deg, var(--orange-soft), var(--blue));
 }
 
-.lightbox-close {
-	position: absolute;
-	top: 0.75rem;
-	right: 0.75rem;
-	z-index: 2;
-	width: 2.35rem;
-	height: 2.35rem;
-	border: 1px solid rgba(255, 255, 255, 0.14);
-	border-radius: 999px;
-	background: rgba(28, 20, 17, 0.75);
-	color: #fffaf6;
-	font-size: 1.35rem;
-	line-height: 1;
-	cursor: pointer;
-}
-
-.lightbox-close:hover {
-	background: var(--orange);
-	border-color: transparent;
+.term.is-playing .term-progress span {
+	animation: term-progress var(--slide-ms) linear;
 }
 
 .cta-row {
@@ -816,6 +864,34 @@ code,
 	}
 }
 
+@keyframes line-in {
+	from {
+		opacity: 0;
+		transform: translateY(0.4rem);
+		filter: blur(2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+		filter: blur(0);
+	}
+}
+
+@keyframes term-progress {
+	from {
+		transform: scaleX(0);
+	}
+	to {
+		transform: scaleX(1);
+	}
+}
+
+@keyframes blink {
+	50% {
+		opacity: 0;
+	}
+}
+
 @keyframes grid-drift {
 	from {
 		background-position: 0 0;
@@ -843,6 +919,27 @@ html.motion [data-reveal].is-in [data-reveal-child] {
 	*::after {
 		animation: none !important;
 		transition: none !important;
+	}
+
+	.term-slide {
+		position: static;
+		opacity: 1;
+		transform: none;
+		pointer-events: auto;
+		inset: auto;
+		margin-bottom: 1.25rem;
+	}
+
+	.term-viewport {
+		min-height: 0;
+	}
+
+	.term-slide:not(.is-active) {
+		display: none;
+	}
+
+	.term-progress {
+		display: none;
 	}
 
 	[data-reveal-child] {
