@@ -65,8 +65,8 @@ All documentation hosts use the same pattern as this hub:
 | Host | Repo | Worker / project | Root |
 |------|------|------------------|------|
 | `docs.almasix.com` | [`almasix-dev/almasix`](https://github.com/almasix-dev/almasix) | `almasix-docs` | `website/` |
-| `conduit.almasix.com` | [`almasix-dev/conduit`](https://github.com/almasix-dev/conduit) | `almasix-conduit-docs` | `website/` |
-| `inertia.almasix.com` | [`almasix-dev/inertia`](https://github.com/almasix-dev/inertia) | `almasix-inertia-docs` | `website/` |
+| `conduit.almasix.com` | [`almasix-dev/conduit`](https://github.com/almasix-dev/almasix-conduit) | `almasix-conduit-docs` | `website/` |
+| `inertia.almasix.com` | [`almasix-dev/inertia`](https://github.com/almasix-dev/almasix-inertia) | `almasix-inertia-docs` | `website/` |
 | `permission.almasix.com` | [`almasix-dev/almasix-permission`](https://github.com/almasix-dev/almasix-permission) | `almasix-permission-docs` | `website/` |
 
 Per docs site: connect Workers Builds → attach custom domain. **Prism** stays on `docs.almasix.com/prism/` (core).
