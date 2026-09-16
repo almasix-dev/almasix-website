@@ -240,14 +240,18 @@ code,
 	animation: preview-in 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
 }
 
+.hero-preview-cap {
+	margin: 0.85rem 0 0;
+	font-size: 0.88rem;
+	color: var(--muted);
+	letter-spacing: 0.01em;
+}
+
 .term {
 	--term-bg: #17120f;
-	--term-fg: #f3ebe4;
-	--slide-ms: 3.6s;
 	position: relative;
 	border-radius: 0.85rem;
 	background: var(--term-bg);
-	color: var(--term-fg);
 	overflow: hidden;
 	border: 1px solid rgba(255, 255, 255, 0.08);
 	box-shadow:
@@ -256,133 +260,14 @@ code,
 	animation: term-glow 6s ease-in-out infinite alternate;
 }
 
-.term-chrome {
-	display: flex;
-	align-items: center;
-	gap: 0.45rem;
-	padding: 0.75rem 1rem;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-	background: rgba(255, 255, 255, 0.03);
-}
-
-.term-chrome span {
-	width: 0.55rem;
-	height: 0.55rem;
-	border-radius: 50%;
-	background: rgba(255, 255, 255, 0.18);
-}
-
-.term-chrome span:nth-child(1) {
-	background: #e07a5a;
-}
-
-.term-chrome span:nth-child(2) {
-	background: #d4a574;
-}
-
-.term-chrome span:nth-child(3) {
-	background: #6a9b7a;
-}
-
-.term-title {
-	margin-left: auto;
-	font-size: 0.72rem;
-	color: rgba(243, 235, 228, 0.45);
-	letter-spacing: 0.02em;
-}
-
-.term-viewport {
-	position: relative;
-	min-height: 15.5rem;
-	padding: 1.15rem 1.25rem 1.35rem;
-	font-family: var(--mono);
-	font-size: 0.86rem;
-	line-height: 1.55;
-}
-
-.term-slide {
-	position: absolute;
-	inset: 1.15rem 1.25rem 1.35rem;
-	margin: 0;
-	opacity: 0;
-	transform: translateY(0.65rem) scale(0.985);
-	pointer-events: none;
-	transition:
-		opacity 0.4s ease,
-		transform 0.4s ease;
-}
-
-.term-slide.is-active {
-	opacity: 1;
-	transform: translateY(0) scale(1);
-	pointer-events: auto;
-}
-
-.term-slide.is-typing > * {
-	opacity: 0;
-	animation: line-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
-	animation-delay: calc(var(--i, 0) * 0.18s + 0.08s);
-}
-
-.term-slide p {
-	margin: 0 0 0.4rem;
-}
-
-.term-prompt {
-	color: var(--orange-soft);
-	margin-right: 0.45rem;
-}
-
-.term-dim {
-	color: rgba(243, 235, 228, 0.55);
-}
-
-.term-ok {
-	color: #8fbf9a;
-}
-
-.term-hi {
-	color: #7eb6d9;
-	font-weight: 500;
-}
-
-.term-tree {
-	margin: 0.35rem 0 0;
-	padding: 0;
-	border: 0;
-	background: transparent;
-	color: rgba(243, 235, 228, 0.88);
-	font-size: inherit;
-	line-height: 1.45;
-	overflow: auto;
-}
-
-.term-cursor {
-	display: inline-block;
-	width: 0.55rem;
-	height: 1.05em;
-	margin-top: 0.35rem;
-	vertical-align: text-bottom;
-	background: var(--orange-soft);
-	animation: blink 1s steps(1) infinite;
-}
-
-.term-progress {
-	height: 2px;
-	background: rgba(255, 255, 255, 0.06);
-}
-
-.term-progress span {
+.term-video {
 	display: block;
-	height: 100%;
 	width: 100%;
-	transform-origin: left center;
-	transform: scaleX(0);
-	background: linear-gradient(90deg, var(--orange-soft), var(--blue));
-}
-
-.term.is-playing .term-progress span {
-	animation: term-progress var(--slide-ms) linear;
+	height: auto;
+	aspect-ratio: 980 / 580;
+	object-fit: cover;
+	object-position: top center;
+	background: var(--term-bg);
 }
 
 .cta-row {
@@ -822,19 +707,6 @@ code,
 	}
 }
 
-@keyframes line-in {
-	from {
-		opacity: 0;
-		transform: translateY(0.4rem);
-		filter: blur(2px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-		filter: blur(0);
-	}
-}
-
 @keyframes term-glow {
 	from {
 		box-shadow:
@@ -850,27 +722,12 @@ code,
 	}
 }
 
-@keyframes term-progress {
-	from {
-		transform: scaleX(0);
-	}
-	to {
-		transform: scaleX(1);
-	}
-}
-
 @keyframes grid-drift {
 	from {
 		background-position: 0 0;
 	}
 	to {
 		background-position: 56px 56px;
-	}
-}
-
-@keyframes blink {
-	50% {
-		opacity: 0;
 	}
 }
 
@@ -892,27 +749,6 @@ html.motion [data-reveal].is-in [data-reveal-child] {
 	*::after {
 		animation: none !important;
 		transition: none !important;
-	}
-
-	.term-slide {
-		position: static;
-		opacity: 1;
-		transform: none;
-		pointer-events: auto;
-		inset: auto;
-		margin-bottom: 1.25rem;
-	}
-
-	.term-viewport {
-		min-height: 0;
-	}
-
-	.term-slide:not(.is-active) {
-		display: none;
-	}
-
-	.term-progress {
-		display: none;
 	}
 
 	[data-reveal-child] {

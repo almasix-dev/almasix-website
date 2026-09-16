@@ -23,47 +23,25 @@ import '../styles/global.css';
 					</div>
 				</div>
 
-				<figure class="hero-preview" aria-label="Quick scaffolding preview">
-					<div class="term" data-hero-slides>
-						<div class="term-chrome" aria-hidden="true">
-							<span></span><span></span><span></span>
-							<code class="term-title">~/projects</code>
-						</div>
-						<div class="term-viewport">
-							<div class="term-slide is-active" data-slide>
-								<p style="--i: 0"><span class="term-prompt">$</span> pipx install almasix</p>
-								<p class="term-dim" style="--i: 1">installed package almasix</p>
-								<p class="term-ok" style="--i: 2">✓ almasix is on your PATH</p>
-							</div>
-							<div class="term-slide" data-slide>
-								<p style="--i: 0"><span class="term-prompt">$</span> almasix new blog</p>
-								<p class="term-dim" style="--i: 1">Creating application <span class="term-hi">blog</span>…</p>
-								<p class="term-ok" style="--i: 2">✓ app · routes · config · resources</p>
-								<p class="term-ok" style="--i: 3">✓ database · storage · smith</p>
-								<p class="term-dim" style="--i: 4">Application ready.</p>
-							</div>
-							<div class="term-slide" data-slide>
-								<p class="term-dim" style="--i: 0">blog/</p>
-								<pre class="term-tree" style="--i: 1" tabindex="0"><code>├── app/
-│   ├── http/controllers/
-│   ├── models/
-│   └── providers/
-├── routes/
-├── resources/views/
-├── database/migrations/
-├── config/
-└── smith</code></pre>
-							</div>
-							<div class="term-slide" data-slide>
-								<p style="--i: 0"><span class="term-prompt">$</span> cd blog && python smith serve</p>
-								<p class="term-dim" style="--i: 1">INFO:     Uvicorn running on</p>
-								<p class="term-hi" style="--i: 2">http://127.0.0.1:8000</p>
-								<p class="term-ok" style="--i: 3">✓ Almasix application started</p>
-								<p class="term-cursor" style="--i: 4" aria-hidden="true"></p>
-							</div>
-						</div>
-						<div class="term-progress" aria-hidden="true"><span></span></div>
+				<figure class="hero-preview">
+					<div class="term term-has-video">
+						<video
+							class="term-video"
+							autoplay
+							muted
+							loop
+							playsinline
+							preload="metadata"
+							poster="/install-demo-poster.jpg"
+							aria-label="Actual install session: pipx install almasix, interactive almasix new myapp with starter kit choices, then smith db:seed and smith serve"
+						>
+							<source src="/install-demo.webm" type="video/webm" />
+							<source src="/install-demo.mp4" type="video/mp4" />
+						</video>
 					</div>
+					<figcaption class="hero-preview-cap">
+						Recorded from a real session — Web kit, Tailwind, SQLite, migrate, seed, serve.
+					</figcaption>
 				</figure>
 			</div>
 		</section>
@@ -78,7 +56,7 @@ import '../styles/global.css';
 						hood where they belong.
 					</p>
 				</div>
-				<pre class="tree mono" data-reveal-child style="--i: 1" tabindex="0"><code>blog/
+				<pre class="tree mono" data-reveal-child style="--i: 1" tabindex="0"><code>myapp/
 ├── app/
 │   ├── http/controllers/
 │   ├── models/
@@ -139,15 +117,15 @@ import '../styles/global.css';
 					</li>
 					<li data-reveal-child style="--i: 3">
 						<strong>Create a project</strong>
-						<code class="mono">almasix new blog</code>
+						<code class="mono">almasix new myapp</code>
 					</li>
 					<li data-reveal-child style="--i: 4">
 						<strong>Serve</strong>
-						<code class="mono">cd blog && python smith serve</code>
+						<code class="mono">cd myapp && python smith serve</code>
 					</li>
 				</ol>
 				<div class="install" data-reveal-child style="--i: 5" role="group" aria-label="Copy-friendly install line">
-					<code class="mono">pipx install almasix && almasix new blog</code>
+					<code class="mono">pipx install almasix && almasix new myapp</code>
 					<a class="btn btn-primary" href="https://docs.almasix.com/installation/">Full installation guide</a>
 				</div>
 			</div>
@@ -214,46 +192,18 @@ import '../styles/global.css';
 
 <script>
 	const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-	const SLIDE_MS = 3600;
 
 	if (!reduce) {
 		document.documentElement.classList.add('motion');
 	}
 
-	const root = document.querySelector('[data-hero-slides]');
-	if (root) {
-		const slides = [...root.querySelectorAll('[data-slide]')];
-		const progress = root.querySelector('.term-progress span');
-		let i = 0;
-
-		const restartProgress = () => {
-			if (!progress) return;
-			progress.style.animation = 'none';
-			void progress.offsetWidth;
-			progress.style.animation = '';
-		};
-
-		const show = (n) => {
-			slides.forEach((el, idx) => {
-				el.classList.toggle('is-active', idx === n);
-				if (idx === n) {
-					el.classList.remove('is-typing');
-					void el.offsetWidth;
-					el.classList.add('is-typing');
-				} else {
-					el.classList.remove('is-typing');
-				}
-			});
-			restartProgress();
-		};
-
-		show(0);
-		if (!reduce && slides.length > 1) {
-			root.classList.add('is-playing');
-			window.setInterval(() => {
-				i = (i + 1) % slides.length;
-				show(i);
-			}, SLIDE_MS);
+	const video = document.querySelector('.term-video');
+	if (video instanceof HTMLVideoElement) {
+		if (reduce) {
+			video.removeAttribute('autoplay');
+			video.pause();
+		} else {
+			video.play().catch(() => {});
 		}
 	}
 
