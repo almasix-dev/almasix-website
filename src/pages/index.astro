@@ -54,19 +54,103 @@ import '../styles/global.css';
 							</div>
 							<div class="term-slide" data-slide>
 								<p style="--i: 0">
-									<span class="term-prompt">$</span> python smith make:model Post
+									<span class="term-prompt">$</span> python smith make:model Post -m
 								</p>
 								<p class="term-ok" style="--i: 1">✓ app/models/post.py</p>
-								<p style="--i: 2">
+								<p class="term-ok" style="--i: 2">✓ database/migrations/*_create_posts_table.py</p>
+								<p style="--i: 3">
 									<span class="term-prompt">$</span> python smith make:controller PostController --resource
 								</p>
-								<p class="term-ok" style="--i: 3">✓ app/http/controllers/post_controller.py</p>
+								<p class="term-ok" style="--i: 4">✓ app/http/controllers/post_controller.py</p>
 							</div>
-							<div class="term-slide" data-slide>
+							<div class="term-slide" data-slide data-ms="5200">
+								<p class="term-dim" style="--i: 0"># create_posts_table.py</p>
+								<pre class="term-code od" style="--i: 1" tabindex="0"><code><span class="od-k">from</span> <span class="od-t">almasix.orm</span> <span class="od-k">import</span> <span class="od-t">Blueprint</span>, <span class="od-t">Migration</span>, <span class="od-t">Schema</span>
+
+<span class="od-k">class</span> <span class="od-t">CreatePostsTable</span>(<span class="od-t">Migration</span>):
+    <span class="od-k">async</span> <span class="od-k">def</span> <span class="od-f">up</span>(<span class="od-p">self</span>) -> <span class="od-k">None</span>:
+        <span class="od-k">def</span> <span class="od-f">define</span>(table: <span class="od-t">Blueprint</span>) -> <span class="od-k">None</span>:
+            table.<span class="od-f">id</span>()
+            table.<span class="od-f">string</span>(<span class="od-s">"title"</span>)
+            table.<span class="od-f">foreign_id</span>(<span class="od-s">"user_id"</span>)
+            table.<span class="od-f">timestamps</span>()
+        <span class="od-k">await</span> <span class="od-t">Schema</span>.<span class="od-f">create</span>(<span class="od-s">"posts"</span>, define)</code></pre>
+							</div>
+							<div class="term-slide" data-slide data-ms="5200">
+								<p class="term-dim" style="--i: 0"># app/models/post.py</p>
+								<pre class="term-code od" style="--i: 1" tabindex="0"><code><span class="od-k">from</span> <span class="od-t">almasix.orm</span> <span class="od-k">import</span> <span class="od-t">Model</span>, relation
+
+<span class="od-k">class</span> <span class="od-t">Post</span>(<span class="od-t">Model</span>):
+    fillable = (<span class="od-s">"title"</span>, <span class="od-s">"user_id"</span>)
+
+    <span class="od-d">@relation</span>
+    <span class="od-k">def</span> <span class="od-f">author</span>(<span class="od-p">self</span>):
+        <span class="od-k">from</span> <span class="od-t">app.models.user</span> <span class="od-k">import</span> <span class="od-t">User</span>
+        <span class="od-k">return</span> <span class="od-p">self</span>.<span class="od-f">belongs_to</span>(<span class="od-t">User</span>)
+
+    <span class="od-d">@relation</span>
+    <span class="od-k">def</span> <span class="od-f">comments</span>(<span class="od-p">self</span>):
+        <span class="od-k">return</span> <span class="od-p">self</span>.<span class="od-f">has_many</span>(<span class="od-t">Comment</span>)</code></pre>
+							</div>
+							<div class="term-slide" data-slide data-ms="5200">
 								<p class="term-dim" style="--i: 0"># post_controller.py</p>
-								<pre class="term-code" style="--i: 1" tabindex="0"><code>async def index(self, request):
-    posts = await Post.query().latest().get()
-    return view("posts.index", posts=posts)</code></pre>
+								<pre class="term-code od" style="--i: 1" tabindex="0"><code><span class="od-k">from</span> <span class="od-t">almasix.http</span> <span class="od-k">import</span> <span class="od-t">Controller</span>, <span class="od-t">Request</span>, <span class="od-t">Response</span>
+<span class="od-k">from</span> <span class="od-t">almasix.prism</span> <span class="od-k">import</span> view
+<span class="od-k">from</span> <span class="od-t">app.models.post</span> <span class="od-k">import</span> <span class="od-t">Post</span>
+
+<span class="od-k">class</span> <span class="od-t">PostController</span>(<span class="od-t">Controller</span>):
+    <span class="od-k">async</span> <span class="od-k">def</span> <span class="od-f">index</span>(<span class="od-p">self</span>, request: <span class="od-t">Request</span>) -> <span class="od-t">Response</span>:
+        posts = <span class="od-k">await</span> <span class="od-t">Post</span>.query().<span class="od-f">with_</span>(<span class="od-s">"author"</span>).<span class="od-f">latest</span>().<span class="od-f">get</span>()
+        <span class="od-k">return</span> <span class="od-f">view</span>(<span class="od-s">"posts.index"</span>, posts=posts)</code></pre>
+							</div>
+							<div class="term-slide" data-slide data-ms="5600">
+								<p class="term-dim" style="--i: 0"># posts/index.prism.html</p>
+								<pre class="term-code od" style="--i: 1" tabindex="0"><code><span class="od-d">@extends</span>(<span class="od-s">"layouts.app"</span>)
+
+<span class="od-d">@section</span>(<span class="od-s">"content"</span>)
+  <span class="od-p">&lt;</span><span class="od-tag">x-card</span><span class="od-p">&gt;</span>
+    <span class="od-p">&lt;</span><span class="od-tag">x-slot:title</span><span class="od-p">&gt;</span>Posts<span class="od-p">&lt;/</span><span class="od-tag">x-slot</span><span class="od-p">&gt;</span>
+    <span class="od-d">@foreach</span>(posts <span class="od-k">as</span> post)
+      <span class="od-p">&lt;</span><span class="od-tag">p</span><span class="od-p">&gt;</span>&#123;&#123; post.title &#125;&#125; — &#123;&#123; post.author.name &#125;&#125;<span class="od-p">&lt;/</span><span class="od-tag">p</span><span class="od-p">&gt;</span>
+    <span class="od-d">@endforeach</span>
+  <span class="od-p">&lt;/</span><span class="od-tag">x-card</span><span class="od-p">&gt;</span>
+<span class="od-d">@endsection</span></code></pre>
+							</div>
+							<div class="term-slide" data-slide data-ms="5200">
+								<p class="term-dim" style="--i: 0"># routes/web.py</p>
+								<pre class="term-code od" style="--i: 1" tabindex="0"><code><span class="od-k">from</span> <span class="od-t">almasix.routing</span> <span class="od-k">import</span> <span class="od-t">Route</span>
+<span class="od-k">from</span> <span class="od-t">app.http.controllers.post_controller</span> <span class="od-k">import</span> <span class="od-t">PostController</span>
+
+<span class="od-k">with</span> <span class="od-t">Route</span>.<span class="od-f">group</span>(middleware=[<span class="od-s">"web"</span>]):
+    <span class="od-t">Route</span>.<span class="od-f">get</span>(<span class="od-s">"/"</span>, [<span class="od-t">WelcomeController</span>, <span class="od-s">"index"</span>])
+    <span class="od-t">Route</span>.<span class="od-f">resource</span>(<span class="od-s">"posts"</span>, <span class="od-t">PostController</span>)
+    <span class="od-t">Route</span>.<span class="od-f">get</span>(
+        <span class="od-s">"/posts/&#123;post&#125;"</span>,
+        [<span class="od-t">PostController</span>, <span class="od-s">"show"</span>],
+    ).<span class="od-f">name</span>(<span class="od-s">"posts.show"</span>)</code></pre>
+							</div>
+							<div class="term-slide" data-slide data-ms="5200">
+								<p class="term-dim" style="--i: 0"># send_digest.py</p>
+								<pre class="term-code od" style="--i: 1" tabindex="0"><code><span class="od-k">from</span> <span class="od-t">almasix.console</span> <span class="od-k">import</span> <span class="od-t">Command</span>
+
+<span class="od-k">class</span> <span class="od-t">SendDigest</span>(<span class="od-t">Command</span>):
+    signature = <span class="od-s">"mail:digest &#123;user?&#125; &#123;--queue=default&#125;"</span>
+    description = <span class="od-s">"Send the daily digest"</span>
+
+    <span class="od-k">def</span> <span class="od-f">handle</span>(<span class="od-p">self</span>) -> <span class="od-t">int</span>:
+        user = <span class="od-p">self</span>.<span class="od-f">argument</span>(<span class="od-s">"user"</span>) <span class="od-k">or</span> <span class="od-s">"everyone"</span>
+        <span class="od-p">self</span>.<span class="od-f">info</span>(<span class="od-s">f"Queue=&#123;self.option('queue')&#125; → &#123;user&#125;"</span>)
+        <span class="od-k">return</span> <span class="od-n">0</span></code></pre>
+							</div>
+							<div class="term-slide" data-slide data-ms="5200">
+								<p class="term-dim" style="--i: 0"># routes/console.py</p>
+								<pre class="term-code od" style="--i: 1" tabindex="0"><code><span class="od-k">from</span> <span class="od-t">almasix.console</span> <span class="od-k">import</span> schedule
+
+schedule.<span class="od-f">command</span>(<span class="od-s">"mail:digest"</span>).<span class="od-f">daily</span>()
+schedule.<span class="od-f">command</span>(<span class="od-s">"cache:prune"</span>).<span class="od-f">hourly</span>()
+schedule.<span class="od-f">call</span>(clear_recent_users).<span class="od-f">daily_at</span>(<span class="od-s">"01:00"</span>)
+
+<span class="od-c"># cron: * * * * * cd /app && smith schedule:run</span></code></pre>
 							</div>
 							<div class="term-slide" data-slide>
 								<p style="--i: 0">
@@ -83,8 +167,14 @@ import '../styles/global.css';
 								<button type="button" role="tab" aria-selected="true" data-goto="0" aria-label="Install"></button>
 								<button type="button" role="tab" aria-selected="false" data-goto="1" aria-label="Scaffold"></button>
 								<button type="button" role="tab" aria-selected="false" data-goto="2" aria-label="Generate"></button>
-								<button type="button" role="tab" aria-selected="false" data-goto="3" aria-label="Write code"></button>
-								<button type="button" role="tab" aria-selected="false" data-goto="4" aria-label="Migrate and serve"></button>
+								<button type="button" role="tab" aria-selected="false" data-goto="3" aria-label="Migration"></button>
+								<button type="button" role="tab" aria-selected="false" data-goto="4" aria-label="Model relations"></button>
+								<button type="button" role="tab" aria-selected="false" data-goto="5" aria-label="Controller"></button>
+								<button type="button" role="tab" aria-selected="false" data-goto="6" aria-label="Prism view"></button>
+								<button type="button" role="tab" aria-selected="false" data-goto="7" aria-label="Routes"></button>
+								<button type="button" role="tab" aria-selected="false" data-goto="8" aria-label="Command"></button>
+								<button type="button" role="tab" aria-selected="false" data-goto="9" aria-label="Scheduler"></button>
+								<button type="button" role="tab" aria-selected="false" data-goto="10" aria-label="Migrate and serve"></button>
 							</div>
 							<button type="button" class="term-pin" data-pin aria-pressed="false">
 								Pin step
@@ -321,7 +411,7 @@ import '../styles/global.css';
 			timer = window.setTimeout(() => {
 				show(i + 1);
 				schedule();
-			}, SLIDE_MS);
+			}, Number(slides[i].getAttribute('data-ms')) || SLIDE_MS);
 		};
 
 		const hold = (on) => {
