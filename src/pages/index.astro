@@ -4,66 +4,170 @@ import '../styles/global.css';
 ---
 
 <BaseLayout>
-	<main>
-		<section class="wrap hero" aria-labelledby="hero-heading">
-			<img
-				class="hero-mark"
-				src="/almasix-banner-light.svg"
-				alt="Almasix"
-				width="320"
-				height="72"
-			/>
-			<h1 id="hero-heading">Laravel’s application shape, in async Python.</h1>
-			<p>
-				Routing, validation, Articulate ORM, Prism views, auth, queues, and the Smith CLI —
-				arranged the way you expect, asynchronous all the way down.
-			</p>
-			<div class="cta-row">
-				<a class="btn btn-primary" href="https://docs.almasix.com/installation/">Get started</a>
-				<a class="btn btn-ghost" href="https://docs.almasix.com/">Read the docs</a>
+	<main id="main">
+		<section class="hero" aria-labelledby="hero-heading">
+			<div class="hero-plane" aria-hidden="true"></div>
+			<div class="wrap hero-inner">
+				<img
+					class="hero-mark"
+					src="/almasix-banner-light.svg"
+					alt="Almasix"
+					width="420"
+					height="94"
+				/>
+				<h1 id="hero-heading">Ship Python web apps with a shape you already trust.</h1>
+				<p class="hero-lede">
+					Routing, Articulate, Prism, auth, queues, and Smith — async end to end, without bolting a
+					framework onto FastAPI by hand.
+				</p>
+				<div class="cta-row">
+					<a class="btn btn-primary" href="https://docs.almasix.com/installation/">Start building</a>
+					<a class="btn btn-ghost" href="#stack">See the stack</a>
+				</div>
+			</div>
+			<div class="hero-facet" aria-hidden="true">
+				<img src="/almasix-light.svg" alt="" width="520" height="520" />
 			</div>
 		</section>
 
-		<section class="section" aria-labelledby="install-heading">
+		<section class="band band-ink" aria-labelledby="promise-heading">
+			<div class="wrap band-split">
+				<div>
+					<h2 id="promise-heading">An application, not a bag of libraries.</h2>
+					<p>
+						Almasix gives you the directories, conventions, and CLI of a grown-up web framework —
+						controllers, providers, migrations, views — while FastAPI and Starlette stay under the
+						hood where they belong.
+					</p>
+				</div>
+				<pre class="tree mono" tabindex="0"><code>blog/
+├── app/
+│   ├── http/controllers/
+│   ├── models/
+│   └── providers/
+├── routes/
+│   ├── web.py
+│   └── api.py
+├── resources/views/
+├── database/migrations/
+├── config/
+└── smith</code></pre>
+			</div>
+		</section>
+
+		<section class="section" id="stack" aria-labelledby="stack-heading">
 			<div class="wrap">
-				<h2 id="install-heading">Install once. Scaffold an app.</h2>
+				<h2 id="stack-heading">Named tools. Clear jobs.</h2>
 				<p class="lead">
-					The global <code class="mono">almasix</code> tool creates projects; each app then runs
-					<code class="mono">python smith …</code> for day-to-day commands.
+					Every surface has a name you can say out loud — so the docs, the CLI, and your codebase
+					agree.
 				</p>
-				<div class="install">
+				<ul class="stack-list">
+					<li>
+						<span class="stack-name">Articulate</span>
+						<span class="stack-role">Async Active Record ORM, query builder, relationships, and migrations.</span>
+						<a href="https://docs.almasix.com/articulate/">ORM docs</a>
+					</li>
+					<li>
+						<span class="stack-name">
+							<img src="/prism-icon.svg" alt="" width="28" height="28" />
+							Prism
+						</span>
+						<span class="stack-role">Blade-familiar templates compiled to fast Python callables.</span>
+						<a href="https://docs.almasix.com/prism/">View engine</a>
+					</li>
+					<li>
+						<span class="stack-name">Smith</span>
+						<span class="stack-role">In-app CLI — generate, migrate, serve, schedule, and open Loupe.</span>
+						<a href="https://docs.almasix.com/console/">Console docs</a>
+					</li>
+					<li>
+						<span class="stack-name">Chrono &amp; Loupe</span>
+						<span class="stack-role">Dates that behave, and a REPL that knows your application.</span>
+						<a href="https://docs.almasix.com/dates/">Dates</a>
+					</li>
+				</ul>
+			</div>
+		</section>
+
+		<section class="section section-muted" aria-labelledby="start-heading">
+			<div class="wrap">
+				<h2 id="start-heading">From install to first response.</h2>
+				<p class="lead">One global tool scaffolds the app; Smith runs everything inside it.</p>
+				<ol class="steps">
+					<li>
+						<strong>Install the installer</strong>
+						<code class="mono">pipx install almasix</code>
+					</li>
+					<li>
+						<strong>Create a project</strong>
+						<code class="mono">almasix new blog</code>
+					</li>
+					<li>
+						<strong>Serve</strong>
+						<code class="mono">cd blog && python smith serve</code>
+					</li>
+				</ol>
+				<div class="install" role="group" aria-label="Copy-friendly install line">
 					<code class="mono">pipx install almasix && almasix new blog</code>
-					<a class="btn btn-ghost" href="https://docs.almasix.com/installation/">Installation guide</a>
+					<a class="btn btn-primary" href="https://docs.almasix.com/installation/">Full installation guide</a>
 				</div>
 			</div>
 		</section>
 
-		<section class="section" aria-labelledby="ecosystem-heading">
+		<section class="section" id="ecosystem" aria-labelledby="ecosystem-heading">
 			<div class="wrap">
-				<h2 id="ecosystem-heading">The ecosystem</h2>
+				<h2 id="ecosystem-heading">The Almasix ecosystem</h2>
 				<p class="lead">
-					One framework core, first-party packages when you need them, and docs that assume no
-					Laravel background.
+					The hub for the framework, first-party packages, editor support, and docs — without
+					assuming you’ve used Laravel.
 				</p>
-				<div class="ecosystem">
+				<div class="eco-grid">
 					<article>
-						<h3>Framework</h3>
+						<h3>Framework &amp; docs</h3>
 						<p>
-							Articulate, Prism, Smith, Chrono, Loupe — the surfaces that ship in
-							<code class="mono">almasix</code>.
+							Core Almasix on PyPI, with the full beginner journey at
+							<code class="mono">docs.almasix.com</code>.
 						</p>
-						<a href="https://docs.almasix.com/">docs.almasix.com →</a>
+						<a href="https://docs.almasix.com/">Open documentation →</a>
 					</article>
 					<article>
-						<h3>Conduit &amp; Inertia</h3>
-						<p>Reactive components and the official Inertia.js adapter as installable extras.</p>
-						<a href="https://github.com/almasix-dev">Browse packages →</a>
+						<h3>First-party packages</h3>
+						<p>
+							Conduit for reactive components, Inertia for SPA shells, and more packages as the
+							line grows.
+						</p>
+						<a href="https://github.com/almasix-dev">Browse almasix-dev →</a>
 					</article>
 					<article>
-						<h3>Open source</h3>
-						<p>MIT licensed, built in the open under the almasix-dev organization on GitHub.</p>
-						<a href="https://github.com/almasix-dev/almasix">Star the repo →</a>
+						<h3>Editor support</h3>
+						<p>
+							Prism language tooling for VS Code / Cursor and JetBrains, plus
+							<code class="mono">smith ide:install</code>.
+						</p>
+						<a href="https://docs.almasix.com/editor-setup/">Editor setup →</a>
 					</article>
+					<article>
+						<h3>Starter kits</h3>
+						<p>
+							Opinionated app skeletons — Tailwind, Bootstrap, or plain — so auth and settings
+							aren’t a weekend project.
+						</p>
+						<a href="https://docs.almasix.com/starter-kits/">Starter kits →</a>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section class="cta-band" aria-labelledby="cta-heading">
+			<div class="wrap cta-band-inner">
+				<h2 id="cta-heading">Build the next Python app like you mean it.</h2>
+				<p>Read the prologue, install once, and keep shipping with Smith.</p>
+				<div class="cta-row">
+					<a class="btn btn-primary" href="https://docs.almasix.com/installation/">Get started</a>
+					<a class="btn btn-on-dark" href="https://docs.almasix.com/prologue/introduction/"
+						>How to read the docs</a
+					>
 				</div>
 			</div>
 		</section>

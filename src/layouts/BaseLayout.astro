@@ -6,10 +6,10 @@ interface Props {
 
 const {
 	title = 'Almasix',
-	description = 'Laravel’s application shape, in async Python — the elegant web framework with Articulate, Prism, and the Smith CLI.',
+	description = 'The elegant Python web framework — Articulate ORM, Prism views, and the Smith CLI. Async all the way down.',
 } = Astro.props;
 
-const pageTitle = title === 'Almasix' ? title : `${title} · Almasix`;
+const pageTitle = title === 'Almasix' ? 'Almasix — elegant async Python web apps' : `${title} · Almasix`;
 ---
 
 <!doctype html>
@@ -19,30 +19,64 @@ const pageTitle = title === 'Almasix' ? title : `${title} · Almasix`;
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content={description} />
 		<meta name="theme-color" content="#F1511B" />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.site} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
 		<title>{pageTitle}</title>
 	</head>
 	<body>
-		<header class="wrap site-header">
-			<a class="brand" href="/" aria-label="Almasix home">
-				<img src="/almasix-banner-light.svg" alt="Almasix" width="160" height="36" />
-			</a>
-			<nav class="nav" aria-label="Primary">
-				<a href="https://docs.almasix.com/">Docs</a>
-				<a href="https://github.com/almasix-dev/almasix">GitHub</a>
-				<a href="https://pypi.org/project/almasix/">PyPI</a>
-			</nav>
+		<a class="skip-link" href="#main">Skip to content</a>
+		<header class="site-header">
+			<div class="wrap header-inner">
+				<a class="brand" href="/" aria-label="Almasix home">
+					<img src="/almasix-banner-light.svg" alt="Almasix" width="168" height="38" />
+				</a>
+				<nav class="nav" aria-label="Primary">
+					<a href="#stack">Stack</a>
+					<a href="#ecosystem">Ecosystem</a>
+					<a href="https://docs.almasix.com/">Docs</a>
+					<a href="https://github.com/almasix-dev/almasix">GitHub</a>
+					<a class="nav-cta" href="https://docs.almasix.com/installation/">Get started</a>
+				</nav>
+			</div>
 		</header>
 		<slot />
 		<footer class="site-footer">
-			<div class="wrap">
-				<p>© {new Date().getFullYear()} Almasix. MIT License.</p>
-				<nav aria-label="Footer">
+			<div class="wrap footer-grid">
+				<div class="footer-brand">
+					<img src="/almasix-banner-light.svg" alt="Almasix" width="140" height="32" />
+					<p>Laravel’s application shape, in async Python. MIT licensed.</p>
+				</div>
+				<nav aria-label="Product">
+					<strong>Product</strong>
 					<a href="https://docs.almasix.com/">Documentation</a>
+					<a href="https://docs.almasix.com/installation/">Installation</a>
+					<a href="https://docs.almasix.com/starter-kits/">Starter kits</a>
+					<a href="https://pypi.org/project/almasix/">PyPI</a>
+				</nav>
+				<nav aria-label="Ecosystem">
+					<strong>Ecosystem</strong>
+					<a href="https://github.com/almasix-dev/conduit">Conduit</a>
+					<a href="https://github.com/almasix-dev/inertia">Inertia</a>
+					<a href="https://github.com/almasix-dev/almasix-vscode">VS Code</a>
+					<a href="https://github.com/almasix-dev/almasix-idea">JetBrains</a>
+				</nav>
+				<nav aria-label="Community">
+					<strong>Community</strong>
 					<a href="https://github.com/almasix-dev">GitHub org</a>
+					<a href="https://github.com/almasix-dev/almasix/discussions">Discussions</a>
 					<a href="https://github.com/sponsors/coolsam726">Sponsor</a>
 				</nav>
+			</div>
+			<div class="wrap footer-meta">
+				<p>© {new Date().getFullYear()} Almasix contributors.</p>
+				<p>
+					Docs live at <a href="https://docs.almasix.com/">docs.almasix.com</a> — this site is the
+					ecosystem hub.
+				</p>
 			</div>
 		</footer>
 	</body>
