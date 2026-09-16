@@ -324,7 +324,7 @@ code,
 
 .term-viewport {
 	position: relative;
-	min-height: 18.5rem;
+	min-height: 20.5rem;
 	padding: 1.35rem 1.45rem 1.55rem;
 	font-family: var(--mono);
 	font-size: clamp(0.92rem, 1.35vw, 1.05rem);
@@ -333,7 +333,7 @@ code,
 
 @media (min-width: 960px) {
 	.term-viewport {
-		min-height: 20.5rem;
+		min-height: 23rem;
 		padding: 1.55rem 1.65rem 1.75rem;
 	}
 }
@@ -402,8 +402,45 @@ code,
 	overflow: auto;
 }
 
-.term-code {
-	color: #cfe6f5;
+/* One Dark Pro token colors (match docs Expressive Code theme) */
+.term-code.od {
+	margin-top: 0.45rem;
+	padding: 0.75rem 0.85rem;
+	border-radius: 0.45rem;
+	background: #282c34;
+	color: #abb2bf;
+	font-size: 0.82em;
+	line-height: 1.55;
+	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+.od-k {
+	color: #c678dd;
+}
+.od-s {
+	color: #98c379;
+}
+.od-f {
+	color: #61afef;
+}
+.od-t {
+	color: #e5c07b;
+}
+.od-n {
+	color: #d19a66;
+}
+.od-c {
+	color: #5c6370;
+	font-style: italic;
+}
+.od-d {
+	color: #e06c75;
+}
+.od-tag {
+	color: #e06c75;
+}
+.od-p {
+	color: #abb2bf;
 }
 
 .term-cursor {
@@ -428,8 +465,10 @@ code,
 
 .term-dots {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
-	gap: 0.45rem;
+	gap: 0.4rem;
+	max-width: min(100%, 22rem);
 }
 
 .term-dots button {
