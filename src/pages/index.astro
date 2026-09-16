@@ -24,10 +24,17 @@ import '../styles/global.css';
 				</div>
 
 				<figure class="hero-preview" aria-label="Quick scaffolding preview">
-					<div class="term" data-hero-slides>
+					<div
+						class="term"
+						data-hero-slides
+						tabindex="0"
+						aria-roledescription="carousel"
+						aria-label="Scaffolding walkthrough. Hover or focus to pause. Use arrow keys to change steps."
+					>
 						<div class="term-chrome" aria-hidden="true">
 							<span></span><span></span><span></span>
 							<code class="term-title">almasix new myapp</code>
+							<span class="term-hold-hint">paused</span>
 						</div>
 						<div class="term-viewport">
 							<div class="term-slide is-active" data-slide>
@@ -71,8 +78,21 @@ import '../styles/global.css';
 								<p class="term-cursor" style="--i: 4" aria-hidden="true"></p>
 							</div>
 						</div>
+						<div class="term-footer">
+							<div class="term-dots" role="tablist" aria-label="Walkthrough steps">
+								<button type="button" role="tab" aria-selected="true" data-goto="0" aria-label="Install"></button>
+								<button type="button" role="tab" aria-selected="false" data-goto="1" aria-label="Scaffold"></button>
+								<button type="button" role="tab" aria-selected="false" data-goto="2" aria-label="Generate"></button>
+								<button type="button" role="tab" aria-selected="false" data-goto="3" aria-label="Write code"></button>
+								<button type="button" role="tab" aria-selected="false" data-goto="4" aria-label="Migrate and serve"></button>
+							</div>
+							<button type="button" class="term-pin" data-pin aria-pressed="false">
+								Pin step
+							</button>
+						</div>
 						<div class="term-progress" aria-hidden="true"><span></span></div>
 					</div>
+					<p class="hero-preview-cap">Hover to pause · pin a step to study it · ← → to move</p>
 				</figure>
 			</div>
 		</section>
@@ -230,40 +250,128 @@ import '../styles/global.css';
 	}
 
 	const root = document.querySelector('[data-hero-slides]');
-	if (root) {
+	if (root instanceof HTMLElement) {
 		const slides = [...root.querySelectorAll('[data-slide]')];
+		const dots = [...root.querySelectorAll('[data-goto]')];
 		const progress = root.querySelector('.term-progress span');
+		const pinBtn = root.querySelector('[data-pin]');
 		let i = 0;
+		let pinned = false;
+		let held = false;
+		let timer = 0;
+
+		const isPlaying = () => !reduce && !pinned && !held && slides.length > 1;
+
+		const syncChrome = () => {
+			root.classList.toggle('is-held', held || pinned);
+			root.classList.toggle('is-pinned', pinned);
+			root.classList.toggle('is-playing', isPlaying());
+			if (pinBtn instanceof HTMLButtonElement) {
+				pinBtn.setAttribute('aria-pressed', pinned ? 'true' : 'false');
+				pinBtn.textContent = pinned ? 'Pinned' : 'Pin step';
+			}
+			dots.forEach((dot, idx) => {
+				dot.setAttribute('aria-selected', idx === i ? 'true' : 'false');
+				dot.classList.toggle('is-active', idx === i);
+			});
+		};
 
 		const restartProgress = () => {
-			if (!progress) return;
+			if (!(progress instanceof HTMLElement)) return;
 			progress.style.animation = 'none';
 			void progress.offsetWidth;
 			progress.style.animation = '';
 		};
 
-		const show = (n) => {
+		const freezeProgress = () => {
+			if (!(progress instanceof HTMLElement)) return;
+			progress.style.animationPlayState = 'paused';
+		};
+
+		const show = (n, { animate = true } = {}) => {
+			i = ((n % slides.length) + slides.length) % slides.length;
 			slides.forEach((el, idx) => {
-				el.classList.toggle('is-active', idx === n);
-				if (idx === n) {
+				el.classList.toggle('is-active', idx === i);
+				if (idx === i && animate) {
 					el.classList.remove('is-typing');
 					void el.offsetWidth;
 					el.classList.add('is-typing');
-				} else {
+				} else if (idx !== i) {
 					el.classList.remove('is-typing');
 				}
 			});
+			syncChrome();
+			if (isPlaying()) restartProgress();
+			else freezeProgress();
+		};
+
+		const stopTimer = () => {
+			window.clearTimeout(timer);
+			timer = 0;
+		};
+
+		const schedule = () => {
+			stopTimer();
+			syncChrome();
+			if (!isPlaying()) {
+				freezeProgress();
+				return;
+			}
 			restartProgress();
+			timer = window.setTimeout(() => {
+				show(i + 1);
+				schedule();
+			}, SLIDE_MS);
+		};
+
+		const hold = (on) => {
+			held = on;
+			schedule();
+		};
+
+		const goTo = (n, { pin = false } = {}) => {
+			if (pin) pinned = true;
+			show(n);
+			schedule();
 		};
 
 		show(0);
-		if (!reduce && slides.length > 1) {
-			root.classList.add('is-playing');
-			window.setInterval(() => {
-				i = (i + 1) % slides.length;
-				show(i);
-			}, SLIDE_MS);
-		}
+		if (!reduce && slides.length > 1) schedule();
+
+		root.addEventListener('mouseenter', () => hold(true));
+		root.addEventListener('mouseleave', () => hold(false));
+		root.addEventListener('focusin', () => hold(true));
+		root.addEventListener('focusout', (event) => {
+			if (!root.contains(event.relatedTarget)) hold(false);
+		});
+
+		pinBtn?.addEventListener('click', () => {
+			pinned = !pinned;
+			schedule();
+		});
+
+		dots.forEach((dot) => {
+			dot.addEventListener('click', () => {
+				const n = Number(dot.getAttribute('data-goto'));
+				if (Number.isFinite(n)) goTo(n, { pin: true });
+			});
+		});
+
+		root.addEventListener('keydown', (event) => {
+			if (event.key === 'ArrowRight') {
+				event.preventDefault();
+				goTo(i + 1, { pin: true });
+			} else if (event.key === 'ArrowLeft') {
+				event.preventDefault();
+				goTo(i - 1, { pin: true });
+			} else if (event.key === ' ' || event.key === 'Enter') {
+				if (event.target === root) {
+					event.preventDefault();
+					pinned = !pinned;
+					schedule();
+				}
+			}
+		});
 	}
 
 	if (!reduce) {
