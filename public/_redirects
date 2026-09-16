@@ -1,3 +1,0 @@
-# Canonical host is the apex. Keep www working as a permanent redirect.
-https://www.almasix.com/* https://almasix.com/:splat 301
-http://www.almasix.com/* https://almasix.com/:splat 301
