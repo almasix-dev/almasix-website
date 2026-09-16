@@ -7,19 +7,63 @@ import '../styles/global.css';
 	<main id="main">
 		<section class="hero" aria-labelledby="hero-heading">
 			<div class="hero-plane" aria-hidden="true"></div>
-			<div class="wrap hero-inner">
-				<p class="hero-brand">
-					<img src="/almasix-banner-light.svg" alt="Almasix" width="280" height="63" />
-				</p>
-				<h1 id="hero-heading">Ship Python web apps with a shape you already trust.</h1>
-				<p class="hero-lede">
-					Routing, Articulate, Prism, auth, queues, and Smith — async end to end, without bolting a
-					framework onto FastAPI by hand.
-				</p>
-				<div class="cta-row">
-					<a class="btn btn-primary" href="https://docs.almasix.com/installation/">Start building</a>
-					<a class="btn btn-ghost" href="#stack">See the stack</a>
+			<div class="wrap hero-stage">
+				<div class="hero-copy">
+					<p class="hero-brand">
+						<img src="/almasix-banner-light.svg" alt="Almasix" width="280" height="63" />
+					</p>
+					<h1 id="hero-heading">Ship Python web apps with a shape you already trust.</h1>
+					<p class="hero-lede">
+						Routing, Articulate, Prism, auth, queues, and Smith — async end to end, without bolting a
+						framework onto FastAPI by hand.
+					</p>
+					<div class="cta-row">
+						<a class="btn btn-primary" href="https://docs.almasix.com/installation/">Start building</a>
+						<a class="btn btn-ghost" href="#stack">See the stack</a>
+					</div>
 				</div>
+
+				<figure class="hero-preview" aria-label="Quick scaffolding preview">
+					<div class="term" data-hero-slides>
+						<div class="term-chrome" aria-hidden="true">
+							<span></span><span></span><span></span>
+							<code class="term-title">~/projects</code>
+						</div>
+						<div class="term-viewport">
+							<div class="term-slide is-active" data-slide>
+								<p><span class="term-prompt">$</span> pipx install almasix</p>
+								<p class="term-dim">installed package almasix</p>
+								<p class="term-ok">✓ almasix is on your PATH</p>
+							</div>
+							<div class="term-slide" data-slide>
+								<p><span class="term-prompt">$</span> almasix new blog</p>
+								<p class="term-dim">Creating application <span class="term-hi">blog</span>…</p>
+								<p class="term-ok">✓ app · routes · config · resources</p>
+								<p class="term-ok">✓ database · storage · smith</p>
+								<p class="term-dim">Application ready.</p>
+							</div>
+							<div class="term-slide" data-slide>
+								<p class="term-dim">blog/</p>
+								<pre class="term-tree" tabindex="0"><code>├── app/
+│   ├── http/controllers/
+│   ├── models/
+│   └── providers/
+├── routes/
+├── resources/views/
+├── database/migrations/
+├── config/
+└── smith</code></pre>
+							</div>
+							<div class="term-slide" data-slide>
+								<p><span class="term-prompt">$</span> cd blog && python smith serve</p>
+								<p class="term-dim">INFO:     Uvicorn running on</p>
+								<p class="term-hi">http://127.0.0.1:8000</p>
+								<p class="term-ok">✓ Almasix application started</p>
+								<p class="term-cursor" aria-hidden="true"></p>
+							</div>
+						</div>
+					</div>
+				</figure>
 			</div>
 		</section>
 
@@ -166,3 +210,21 @@ import '../styles/global.css';
 		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	const root = document.querySelector('[data-hero-slides]');
+	if (root) {
+		const slides = [...root.querySelectorAll('[data-slide]')];
+		const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		let i = 0;
+		const show = (n) => {
+			slides.forEach((el, idx) => el.classList.toggle('is-active', idx === n));
+		};
+		if (!reduce && slides.length > 1) {
+			window.setInterval(() => {
+				i = (i + 1) % slides.length;
+				show(i);
+			}, 3200);
+		}
+	}
+</script>
