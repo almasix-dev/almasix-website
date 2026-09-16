@@ -28,19 +28,74 @@ const pageTitle = title === 'Almasix' ? 'Almasix — elegant async Python web ap
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
 		<title>{pageTitle}</title>
+		<script is:inline>
+			(function () {
+				try {
+					var key = 'almasix-theme';
+					var stored = localStorage.getItem(key);
+					var theme =
+						stored === 'light' || stored === 'dark'
+							? stored
+							: window.matchMedia('(prefers-color-scheme: dark)').matches
+								? 'dark'
+								: 'light';
+					document.documentElement.setAttribute('data-theme', theme);
+					var meta = document.querySelector('meta[name="theme-color"]');
+					if (meta) meta.setAttribute('content', theme === 'dark' ? '#12100e' : '#F1511B');
+				} catch (_) {
+					document.documentElement.setAttribute('data-theme', 'light');
+				}
+			})();
+		</script>
 	</head>
 	<body>
 		<a class="skip-link" href="#main">Skip to content</a>
 		<header class="site-header">
 			<div class="wrap header-inner">
 				<a class="brand" href="/" aria-label="Almasix home">
-					<img src="/almasix-banner-light.svg" alt="Almasix" width="168" height="38" />
+					<img
+						class="brand-mark brand-mark-light"
+						src="/almasix-banner-light.svg"
+						alt="Almasix"
+						width="168"
+						height="38"
+					/>
+					<img
+						class="brand-mark brand-mark-dark"
+						src="/almasix-banner-dark.svg"
+						alt=""
+						width="168"
+						height="38"
+					/>
 				</a>
 				<nav class="nav" aria-label="Primary">
 					<a href="/#stack">Stack</a>
 					<a href="/packages">Packages</a>
 					<a href="https://docs.almasix.com/">Docs</a>
 					<a href="https://github.com/almasix-dev/almasix">GitHub</a>
+					<button
+						type="button"
+						class="theme-toggle"
+						data-theme-toggle
+						aria-label="Toggle dark mode"
+						title="Toggle theme"
+					>
+						<svg class="icon-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<path
+								d="M21 14.3A8.5 8.5 0 0 1 9.7 3 7 7 0 1 0 21 14.3Z"
+								stroke="currentColor"
+								stroke-width="1.75"
+								stroke-linejoin="round"></path>
+						</svg>
+						<svg class="icon-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.75"></circle>
+							<path
+								d="M12 2.5v2.25M12 19.25V21.5M4.75 12H2.5M21.5 12h-2.25M5.64 5.64l1.6 1.6M16.76 16.76l1.6 1.6M18.36 5.64l-1.6 1.6M7.24 16.76l-1.6 1.6"
+								stroke="currentColor"
+								stroke-width="1.75"
+								stroke-linecap="round"></path>
+						</svg>
+					</button>
 					<a class="nav-cta" href="https://docs.almasix.com/installation/">Get started</a>
 				</nav>
 			</div>
@@ -49,7 +104,20 @@ const pageTitle = title === 'Almasix' ? 'Almasix — elegant async Python web ap
 		<footer class="site-footer">
 			<div class="wrap footer-grid">
 				<div class="footer-brand">
-					<img src="/almasix-banner-light.svg" alt="Almasix" width="140" height="32" />
+					<img
+						class="brand-mark brand-mark-light"
+						src="/almasix-banner-light.svg"
+						alt="Almasix"
+						width="140"
+						height="32"
+					/>
+					<img
+						class="brand-mark brand-mark-dark"
+						src="/almasix-banner-dark.svg"
+						alt=""
+						width="140"
+						height="32"
+					/>
 					<p>Laravel’s application shape, in async Python. MIT licensed.</p>
 				</div>
 				<nav aria-label="Product">
@@ -81,5 +149,48 @@ const pageTitle = title === 'Almasix' ? 'Almasix — elegant async Python web ap
 				</p>
 			</div>
 		</footer>
+		<script>
+			const KEY = 'almasix-theme';
+
+			const getTheme = () =>
+				document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+
+			const applyTheme = (theme) => {
+				document.documentElement.setAttribute('data-theme', theme);
+				try {
+					localStorage.setItem(KEY, theme);
+				} catch (_) {
+					/* ignore */
+				}
+				const meta = document.querySelector('meta[name="theme-color"]');
+				if (meta) meta.setAttribute('content', theme === 'dark' ? '#12100e' : '#F1511B');
+				document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+					if (btn instanceof HTMLButtonElement) {
+						btn.setAttribute(
+							'aria-label',
+							theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode',
+						);
+					}
+				});
+			};
+
+			document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+				btn.addEventListener('click', () => {
+					applyTheme(getTheme() === 'dark' ? 'light' : 'dark');
+				});
+			});
+
+			applyTheme(getTheme());
+
+			try {
+				window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+					const stored = localStorage.getItem(KEY);
+					if (stored === 'light' || stored === 'dark') return;
+					applyTheme(event.matches ? 'dark' : 'light');
+				});
+			} catch (_) {
+				/* ignore */
+			}
+		</script>
 	</body>
 </html>

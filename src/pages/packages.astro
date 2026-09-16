@@ -4,27 +4,59 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const ready = [
 	{
 		name: 'Conduit',
+		tag: 'Reactive',
+		accent: '#f1511b',
 		host: 'conduit.almasix.com',
-		pip: 'almasix[conduit]',
+		install: "pip install 'almasix[conduit]'",
 		blurb: 'Livewire-parity reactive components — server-driven UI with almasix.conduit.',
+		snippetFile: 'app/http/livewire/counter.py',
+		snippet: `<span class="od-k">from</span> <span class="od-t">almasix.conduit</span> <span class="od-k">import</span> <span class="od-t">Component</span>
+
+<span class="od-k">class</span> <span class="od-t">Counter</span>(<span class="od-t">Component</span>):
+    count = <span class="od-n">0</span>
+
+    <span class="od-k">def</span> <span class="od-f">increment</span>(<span class="od-p">self</span>) -> <span class="od-k">None</span>:
+        <span class="od-p">self</span>.count += <span class="od-n">1</span>`,
 		docs: 'https://conduit.almasix.com/',
 		github: 'https://github.com/almasix-dev/almasix-conduit',
 		pypi: 'https://pypi.org/project/almasix-conduit/',
 	},
 	{
 		name: 'Inertia',
+		tag: 'SPA',
+		accent: '#286291',
 		host: 'inertia.almasix.com',
-		pip: 'almasix[inertia]',
+		install: "pip install 'almasix[inertia]'",
 		blurb: 'Official Inertia.js adapter for Vue, React, and Svelte — plus Node SSR.',
+		snippetFile: 'app/http/controllers/users_controller.py',
+		snippet: `<span class="od-k">from</span> <span class="od-t">almasix.inertia</span> <span class="od-k">import</span> inertia
+
+<span class="od-k">class</span> <span class="od-t">UsersController</span>:
+    <span class="od-k">async</span> <span class="od-k">def</span> <span class="od-f">index</span>(<span class="od-p">self</span>):
+        <span class="od-k">return</span> <span class="od-f">inertia</span>(
+            <span class="od-s">"Users/Index"</span>,
+            users=<span class="od-k">await</span> <span class="od-t">User</span>.query().<span class="od-f">get</span>(),
+        )`,
 		docs: 'https://inertia.almasix.com/',
 		github: 'https://github.com/almasix-dev/almasix-inertia',
 		pypi: 'https://pypi.org/project/almasix-inertia/',
 	},
 	{
 		name: 'Permission',
+		tag: 'Auth',
+		accent: '#1a4a6e',
 		host: 'permission.almasix.com',
-		pip: 'almasix-permission',
+		install: 'pip install almasix-permission',
 		blurb: 'Spatie-style roles and permissions — Gates, middleware, and Prism directives.',
+		snippetFile: 'app/models/user.py',
+		snippet: `<span class="od-k">from</span> <span class="od-t">almasix.permission</span> <span class="od-k">import</span> <span class="od-t">HasRoles</span>
+
+<span class="od-k">class</span> <span class="od-t">User</span>(<span class="od-t">Authenticatable</span>, <span class="od-t">HasRoles</span>):
+    <span class="od-k">pass</span>
+
+<span class="od-c"># later</span>
+<span class="od-k">await</span> user.<span class="od-f">assign_role</span>(<span class="od-s">"editor"</span>)
+<span class="od-k">await</span> user.<span class="od-f">can</span>(<span class="od-s">"posts.update"</span>)`,
 		docs: 'https://permission.almasix.com/',
 		github: 'https://github.com/almasix-dev/almasix-permission',
 		pypi: 'https://pypi.org/project/almasix-permission/',
@@ -34,6 +66,8 @@ const ready = [
 const soon = [
 	{
 		name: 'Sonar',
+		tag: 'Realtime',
+		accent: '#6a5c54',
 		pip: '@almasix/sonar',
 		blurb: 'Browser client for Almasix realtime. Not on npm yet; broadcasting lives in the framework docs.',
 		github: 'https://github.com/almasix-dev/almasix-sonar',
@@ -58,68 +92,127 @@ const soon = [
 			</div>
 		</section>
 
-		<section class="section" aria-labelledby="ready-heading">
+		<section class="section pkg-section" aria-labelledby="ready-heading" data-reveal>
 			<div class="wrap">
-				<h2 id="ready-heading">Ready now</h2>
-				<p class="lead">Public docs sites and PyPI releases — start here.</p>
-				<ul class="pkg-list">
-					{
-						ready.map((pkg) => (
-							<li>
-								<div class="pkg-head">
-									<span class="pkg-name">{pkg.name}</span>
-									<code class="mono pkg-host">{pkg.host}</code>
+				<h2 id="ready-heading" data-reveal-child style="--i: 0">Ready now</h2>
+				<p class="lead" data-reveal-child style="--i: 1">
+					Public docs sites and PyPI releases — start here.
+				</p>
+			</div>
+			<div class="pkg-bands">
+				{
+					ready.map((pkg, idx) => (
+						<article
+							class:list={['pkg-band', idx % 2 === 1 && 'pkg-band-alt']}
+							style={`--pkg-accent: ${pkg.accent}; --i: ${idx + 2}`}
+							data-reveal-child
+							aria-labelledby={`pkg-${pkg.name.toLowerCase()}`}
+						>
+							<div class="wrap pkg-band-inner">
+								<div class="pkg-meta">
+									<p class="pkg-tag mono">{pkg.tag}</p>
+									<div class="pkg-head">
+										<h3 class="pkg-name" id={`pkg-${pkg.name.toLowerCase()}`}>
+											{pkg.name}
+										</h3>
+										<code class="mono pkg-host">{pkg.host}</code>
+									</div>
+									<p class="pkg-blurb">{pkg.blurb}</p>
+									<div class="pkg-links">
+										<a href={pkg.docs}>Docs →</a>
+										<a href={pkg.github}>GitHub</a>
+										<a href={pkg.pypi}>PyPI</a>
+									</div>
 								</div>
-								<p class="pkg-blurb">{pkg.blurb}</p>
-								<pre class="pkg-install"><code>{pkg.pip.includes('[') ? `pip install '${pkg.pip}'` : `pip install ${pkg.pip}`}</code></pre>
-								<div class="pkg-links">
-									<a href={pkg.docs}>Docs →</a>
-									<a href={pkg.github}>GitHub</a>
-									<a href={pkg.pypi}>PyPI</a>
+
+								<div class="pkg-code" role="group" aria-label={`${pkg.name} install and usage`}>
+									<div class="pkg-code-chrome" aria-hidden="true">
+										<span></span>
+										<span></span>
+										<span></span>
+										<code class="pkg-code-title">{pkg.snippetFile}</code>
+									</div>
+									<div class="pkg-code-body od">
+										<div class="pkg-install-row">
+											<pre class="pkg-install-line"><code><span class="od-c">$</span> {pkg.install}</code></pre>
+											<button
+												type="button"
+												class="pkg-copy"
+												data-copy={pkg.install}
+												aria-label={`Copy install command for ${pkg.name}`}
+											>
+												Copy
+											</button>
+										</div>
+										<pre class="pkg-snippet"><code set:html={pkg.snippet} /></pre>
+									</div>
 								</div>
-							</li>
-						))
-					}
-				</ul>
+							</div>
+						</article>
+					))
+				}
 			</div>
 		</section>
 
-		<section class="section section-muted" aria-labelledby="soon-heading">
+		<section class="section section-muted pkg-section" aria-labelledby="soon-heading" data-reveal>
 			<div class="wrap">
-				<h2 id="soon-heading">On deck</h2>
-				<p class="lead">
+				<h2 id="soon-heading" data-reveal-child style="--i: 0">On deck</h2>
+				<p class="lead" data-reveal-child style="--i: 1">
 					Incubating — package subdomains wait until each has real public docs.
 				</p>
-				<ul class="pkg-list pkg-list-soon">
-					{
-						soon.map((pkg) => (
-							<li>
-								<div class="pkg-head">
-									<span class="pkg-name">{pkg.name}</span>
-									<code class="mono pkg-host">docs pending</code>
+			</div>
+			<div class="pkg-bands">
+				{
+					soon.map((pkg, idx) => (
+						<article
+							class="pkg-band pkg-band-soon"
+							style={`--pkg-accent: ${pkg.accent}; --i: ${idx + 2}`}
+							data-reveal-child
+							aria-labelledby={`pkg-${pkg.name.toLowerCase()}`}
+						>
+							<div class="wrap pkg-band-inner pkg-band-inner-soon">
+								<div class="pkg-meta">
+									<p class="pkg-tag mono">{pkg.tag}</p>
+									<div class="pkg-head">
+										<h3 class="pkg-name" id={`pkg-${pkg.name.toLowerCase()}`}>
+											{pkg.name}
+										</h3>
+										<code class="mono pkg-host">docs pending</code>
+									</div>
+									<p class="pkg-blurb">{pkg.blurb}</p>
+									<div class="pkg-links">
+										{pkg.docs ? <a href={pkg.docs}>Related docs →</a> : null}
+										<a href={pkg.github}>GitHub</a>
+									</div>
 								</div>
-								<p class="pkg-blurb">{pkg.blurb}</p>
-								<pre class="pkg-install"><code>{pkg.pip.startsWith('@') ? `npm i ${pkg.pip}` : `pip install ${pkg.pip}`}</code></pre>
-								<div class="pkg-links">
-									{pkg.docs ? <a href={pkg.docs}>Related docs →</a> : null}
-									<a href={pkg.github}>GitHub</a>
-									{pkg.pypi ? <a href={pkg.pypi}>PyPI</a> : null}
+								<div class="pkg-code pkg-code-muted" role="group" aria-label={`${pkg.name} status`}>
+									<div class="pkg-code-chrome" aria-hidden="true">
+										<span></span>
+										<span></span>
+										<span></span>
+										<code class="pkg-code-title">coming soon</code>
+									</div>
+									<div class="pkg-code-body od">
+										<pre class="pkg-snippet"><code><span class="od-c"># not on npm yet</span>
+<span class="od-c"># npm i {pkg.pip}</span>
+<span class="od-c"># → see broadcasting docs for the framework channel</span></code></pre>
+									</div>
 								</div>
-							</li>
-						))
-					}
-				</ul>
+							</div>
+						</article>
+					))
+				}
 			</div>
 		</section>
 
-		<section class="section" aria-labelledby="editors-heading">
+		<section class="section" aria-labelledby="editors-heading" data-reveal>
 			<div class="wrap">
-				<h2 id="editors-heading">Editor support</h2>
-				<p class="lead">
+				<h2 id="editors-heading" data-reveal-child style="--i: 0">Editor support</h2>
+				<p class="lead" data-reveal-child style="--i: 1">
 					VS Code / Cursor and JetBrains plugins stay under framework docs — not package hosts.
 					Prism docs live at <code class="mono">docs.almasix.com/prism/</code>.
 				</p>
-				<p class="pkg-editors">
+				<p class="pkg-editors" data-reveal-child style="--i: 2">
 					<a href="https://docs.almasix.com/editor-setup/">Editor setup →</a>
 					<span aria-hidden="true"> · </span>
 					<a href="https://docs.almasix.com/prism/">Prism →</a>
@@ -132,3 +225,47 @@ const soon = [
 		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	document.querySelectorAll('[data-copy]').forEach((btn) => {
+		if (!(btn instanceof HTMLButtonElement)) return;
+		btn.addEventListener('click', async () => {
+			const text = btn.getAttribute('data-copy') ?? '';
+			try {
+				await navigator.clipboard.writeText(text);
+				const prev = btn.textContent;
+				btn.textContent = 'Copied';
+				btn.classList.add('is-copied');
+				window.setTimeout(() => {
+					btn.textContent = prev;
+					btn.classList.remove('is-copied');
+				}, 1400);
+			} catch {
+				btn.textContent = 'Failed';
+				window.setTimeout(() => {
+					btn.textContent = 'Copy';
+				}, 1400);
+			}
+		});
+	});
+
+	const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	if (!reduce) {
+		document.documentElement.classList.add('motion');
+		const reveals = document.querySelectorAll('[data-reveal]');
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('is-in');
+						io.unobserve(entry.target);
+					}
+				}
+			},
+			{ threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
+		);
+		reveals.forEach((el) => io.observe(el));
+	} else {
+		document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('is-in'));
+	}
+</script>
