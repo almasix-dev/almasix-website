@@ -7,32 +7,70 @@ import '../styles/global.css';
 	<main id="main">
 		<section class="hero" aria-labelledby="hero-heading">
 			<div class="hero-plane" aria-hidden="true"></div>
-			<div class="wrap hero-inner">
-				<img
-					class="hero-mark"
-					src="/almasix-banner-light.svg"
-					alt="Almasix"
-					width="420"
-					height="94"
-				/>
-				<h1 id="hero-heading">Ship Python web apps with a shape you already trust.</h1>
-				<p class="hero-lede">
-					Routing, Articulate, Prism, auth, queues, and Smith — async end to end, without bolting a
-					framework onto FastAPI by hand.
-				</p>
-				<div class="cta-row">
-					<a class="btn btn-primary" href="https://docs.almasix.com/installation/">Start building</a>
-					<a class="btn btn-ghost" href="#stack">See the stack</a>
+			<div class="wrap hero-stage">
+				<div class="hero-copy">
+					<p class="hero-brand">
+						<img src="/almasix-banner-light.svg" alt="Almasix" width="280" height="63" />
+					</p>
+					<h1 id="hero-heading">Ship Python web apps with a shape you already trust.</h1>
+					<p class="hero-lede">
+						Routing, Articulate, Prism, auth, queues, and Smith — async end to end, without bolting a
+						framework onto FastAPI by hand.
+					</p>
+					<div class="cta-row">
+						<a class="btn btn-primary" href="https://docs.almasix.com/installation/">Start building</a>
+						<a class="btn btn-ghost" href="#stack">See the stack</a>
+					</div>
 				</div>
-			</div>
-			<div class="hero-facet" aria-hidden="true">
-				<img src="/almasix-light.svg" alt="" width="520" height="520" />
+
+				<figure class="hero-preview" aria-label="Quick scaffolding preview">
+					<div class="term" data-hero-slides>
+						<div class="term-chrome" aria-hidden="true">
+							<span></span><span></span><span></span>
+							<code class="term-title">~/projects</code>
+						</div>
+						<div class="term-viewport">
+							<div class="term-slide is-active" data-slide>
+								<p style="--i: 0"><span class="term-prompt">$</span> pipx install almasix</p>
+								<p class="term-dim" style="--i: 1">installed package almasix</p>
+								<p class="term-ok" style="--i: 2">✓ almasix is on your PATH</p>
+							</div>
+							<div class="term-slide" data-slide>
+								<p style="--i: 0"><span class="term-prompt">$</span> almasix new blog</p>
+								<p class="term-dim" style="--i: 1">Creating application <span class="term-hi">blog</span>…</p>
+								<p class="term-ok" style="--i: 2">✓ app · routes · config · resources</p>
+								<p class="term-ok" style="--i: 3">✓ database · storage · smith</p>
+								<p class="term-dim" style="--i: 4">Application ready.</p>
+							</div>
+							<div class="term-slide" data-slide>
+								<p class="term-dim" style="--i: 0">blog/</p>
+								<pre class="term-tree" style="--i: 1" tabindex="0"><code>├── app/
+│   ├── http/controllers/
+│   ├── models/
+│   └── providers/
+├── routes/
+├── resources/views/
+├── database/migrations/
+├── config/
+└── smith</code></pre>
+							</div>
+							<div class="term-slide" data-slide>
+								<p style="--i: 0"><span class="term-prompt">$</span> cd blog && python smith serve</p>
+								<p class="term-dim" style="--i: 1">INFO:     Uvicorn running on</p>
+								<p class="term-hi" style="--i: 2">http://127.0.0.1:8000</p>
+								<p class="term-ok" style="--i: 3">✓ Almasix application started</p>
+								<p class="term-cursor" style="--i: 4" aria-hidden="true"></p>
+							</div>
+						</div>
+						<div class="term-progress" aria-hidden="true"><span></span></div>
+					</div>
+				</figure>
 			</div>
 		</section>
 
-		<section class="band band-ink" aria-labelledby="promise-heading">
+		<section class="band band-ink" aria-labelledby="promise-heading" data-reveal>
 			<div class="wrap band-split">
-				<div>
+				<div data-reveal-child style="--i: 0">
 					<h2 id="promise-heading">An application, not a bag of libraries.</h2>
 					<p>
 						Almasix gives you the directories, conventions, and CLI of a grown-up web framework —
@@ -40,7 +78,7 @@ import '../styles/global.css';
 						hood where they belong.
 					</p>
 				</div>
-				<pre class="tree mono" tabindex="0"><code>blog/
+				<pre class="tree mono" data-reveal-child style="--i: 1" tabindex="0"><code>blog/
 ├── app/
 │   ├── http/controllers/
 │   ├── models/
@@ -55,20 +93,20 @@ import '../styles/global.css';
 			</div>
 		</section>
 
-		<section class="section" id="stack" aria-labelledby="stack-heading">
+		<section class="section" id="stack" aria-labelledby="stack-heading" data-reveal>
 			<div class="wrap">
-				<h2 id="stack-heading">Named tools. Clear jobs.</h2>
-				<p class="lead">
+				<h2 id="stack-heading" data-reveal-child style="--i: 0">Named tools. Clear jobs.</h2>
+				<p class="lead" data-reveal-child style="--i: 1">
 					Every surface has a name you can say out loud — so the docs, the CLI, and your codebase
 					agree.
 				</p>
 				<ul class="stack-list">
-					<li>
+					<li data-reveal-child style="--i: 2">
 						<span class="stack-name">Articulate</span>
 						<span class="stack-role">Async Active Record ORM, query builder, relationships, and migrations.</span>
 						<a href="https://docs.almasix.com/articulate/">ORM docs</a>
 					</li>
-					<li>
+					<li data-reveal-child style="--i: 3">
 						<span class="stack-name">
 							<img src="/prism-icon.svg" alt="" width="28" height="28" />
 							Prism
@@ -76,12 +114,12 @@ import '../styles/global.css';
 						<span class="stack-role">Blade-familiar templates compiled to fast Python callables.</span>
 						<a href="https://docs.almasix.com/prism/">View engine</a>
 					</li>
-					<li>
+					<li data-reveal-child style="--i: 4">
 						<span class="stack-name">Smith</span>
 						<span class="stack-role">In-app CLI — generate, migrate, serve, schedule, and open Loupe.</span>
 						<a href="https://docs.almasix.com/console/">Console docs</a>
 					</li>
-					<li>
+					<li data-reveal-child style="--i: 5">
 						<span class="stack-name">Chrono &amp; Loupe</span>
 						<span class="stack-role">Dates that behave, and a REPL that knows your application.</span>
 						<a href="https://docs.almasix.com/dates/">Dates</a>
@@ -90,40 +128,40 @@ import '../styles/global.css';
 			</div>
 		</section>
 
-		<section class="section section-muted" aria-labelledby="start-heading">
+		<section class="section section-muted" aria-labelledby="start-heading" data-reveal>
 			<div class="wrap">
-				<h2 id="start-heading">From install to first response.</h2>
-				<p class="lead">One global tool scaffolds the app; Smith runs everything inside it.</p>
+				<h2 id="start-heading" data-reveal-child style="--i: 0">From install to first response.</h2>
+				<p class="lead" data-reveal-child style="--i: 1">One global tool scaffolds the app; Smith runs everything inside it.</p>
 				<ol class="steps">
-					<li>
+					<li data-reveal-child style="--i: 2">
 						<strong>Install the installer</strong>
 						<code class="mono">pipx install almasix</code>
 					</li>
-					<li>
+					<li data-reveal-child style="--i: 3">
 						<strong>Create a project</strong>
 						<code class="mono">almasix new blog</code>
 					</li>
-					<li>
+					<li data-reveal-child style="--i: 4">
 						<strong>Serve</strong>
 						<code class="mono">cd blog && python smith serve</code>
 					</li>
 				</ol>
-				<div class="install" role="group" aria-label="Copy-friendly install line">
+				<div class="install" data-reveal-child style="--i: 5" role="group" aria-label="Copy-friendly install line">
 					<code class="mono">pipx install almasix && almasix new blog</code>
 					<a class="btn btn-primary" href="https://docs.almasix.com/installation/">Full installation guide</a>
 				</div>
 			</div>
 		</section>
 
-		<section class="section" id="ecosystem" aria-labelledby="ecosystem-heading">
+		<section class="section" id="ecosystem" aria-labelledby="ecosystem-heading" data-reveal>
 			<div class="wrap">
-				<h2 id="ecosystem-heading">The Almasix ecosystem</h2>
-				<p class="lead">
+				<h2 id="ecosystem-heading" data-reveal-child style="--i: 0">The Almasix ecosystem</h2>
+				<p class="lead" data-reveal-child style="--i: 1">
 					The hub for the framework, first-party packages, editor support, and docs — without
 					assuming you’ve used Laravel.
 				</p>
 				<div class="eco-grid">
-					<article>
+					<article data-reveal-child style="--i: 2">
 						<h3>Framework &amp; docs</h3>
 						<p>
 							Core Almasix on PyPI, with the full beginner journey at
@@ -131,7 +169,7 @@ import '../styles/global.css';
 						</p>
 						<a href="https://docs.almasix.com/">Open documentation →</a>
 					</article>
-					<article>
+					<article data-reveal-child style="--i: 3">
 						<h3>First-party packages</h3>
 						<p>
 							Conduit for reactive components, Inertia for SPA shells, and more packages as the
@@ -139,7 +177,7 @@ import '../styles/global.css';
 						</p>
 						<a href="https://github.com/almasix-dev">Browse almasix-dev →</a>
 					</article>
-					<article>
+					<article data-reveal-child style="--i: 4">
 						<h3>Editor support</h3>
 						<p>
 							Prism language tooling for VS Code / Cursor and JetBrains, plus
@@ -147,7 +185,7 @@ import '../styles/global.css';
 						</p>
 						<a href="https://docs.almasix.com/editor-setup/">Editor setup →</a>
 					</article>
-					<article>
+					<article data-reveal-child style="--i: 5">
 						<h3>Starter kits</h3>
 						<p>
 							Opinionated app skeletons — Tailwind, Bootstrap, or plain — so auth and settings
@@ -159,8 +197,8 @@ import '../styles/global.css';
 			</div>
 		</section>
 
-		<section class="cta-band" aria-labelledby="cta-heading">
-			<div class="wrap cta-band-inner">
+		<section class="cta-band" aria-labelledby="cta-heading" data-reveal>
+			<div class="wrap cta-band-inner" data-reveal-child style="--i: 0">
 				<h2 id="cta-heading">Build the next Python app like you mean it.</h2>
 				<p>Read the prologue, install once, and keep shipping with Smith.</p>
 				<div class="cta-row">
@@ -173,3 +211,67 @@ import '../styles/global.css';
 		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const SLIDE_MS = 3600;
+
+	if (!reduce) {
+		document.documentElement.classList.add('motion');
+	}
+
+	const root = document.querySelector('[data-hero-slides]');
+	if (root) {
+		const slides = [...root.querySelectorAll('[data-slide]')];
+		const progress = root.querySelector('.term-progress span');
+		let i = 0;
+
+		const restartProgress = () => {
+			if (!progress) return;
+			progress.style.animation = 'none';
+			void progress.offsetWidth;
+			progress.style.animation = '';
+		};
+
+		const show = (n) => {
+			slides.forEach((el, idx) => {
+				el.classList.toggle('is-active', idx === n);
+				if (idx === n) {
+					el.classList.remove('is-typing');
+					void el.offsetWidth;
+					el.classList.add('is-typing');
+				} else {
+					el.classList.remove('is-typing');
+				}
+			});
+			restartProgress();
+		};
+
+		show(0);
+		if (!reduce && slides.length > 1) {
+			root.classList.add('is-playing');
+			window.setInterval(() => {
+				i = (i + 1) % slides.length;
+				show(i);
+			}, SLIDE_MS);
+		}
+	}
+
+	if (!reduce) {
+		const reveals = document.querySelectorAll('[data-reveal]');
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('is-in');
+						io.unobserve(entry.target);
+					}
+				}
+			},
+			{ threshold: 0.16, rootMargin: '0px 0px -8% 0px' },
+		);
+		reveals.forEach((el) => io.observe(el));
+	} else {
+		document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('is-in'));
+	}
+</script>
