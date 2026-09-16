@@ -19,8 +19,6 @@ This site is a **static Astro** app served as Worker static assets (not Pages Fu
 
 `almasix.com` and `www.almasix.com` are Active on the Worker.
 
-Leave **`docs.almasix.com`** alone (GitHub Pages / Starlight).
-
 ### www → apex (Redirect Rule — not `_redirects`)
 
 Workers static-asset `_redirects` only allows **relative** URLs and does **not** support domain-level redirects. Absolute `https://www…` rules fail deploy with `Invalid _redirects configuration` / code `100324`.
@@ -56,3 +54,30 @@ npx wrangler deploy   # needs Cloudflare auth
 ## Why PRs showed “Workers Builds … failed in 0s”
 
 Workers Builds was connected to the repo but there was no Wrangler config, so the check aborted before a real build. `wrangler.jsonc` fixes that preflight.
+
+## Docs sites (Cloudflare Worker assets)
+
+All documentation hosts use the same Wrangler static-assets pattern as this hub (not GitHub Pages).
+
+| Host | Repo | Worker name | Root |
+|------|------|-------------|------|
+| `docs.almasix.com` | [`almasix-dev/almasix`](https://github.com/almasix-dev/almasix) `website/` | `almasix-docs` | framework Starlight (includes Prism) |
+| `conduit.almasix.com` | [`almasix-dev/conduit`](https://github.com/almasix-dev/conduit) `website/` | `almasix-conduit-docs` | package docs |
+| `inertia.almasix.com` | [`almasix-dev/inertia`](https://github.com/almasix-dev/inertia) `website/` | `almasix-inertia-docs` | package docs |
+| `permission.almasix.com` | [`almasix-dev/almasix-permission`](https://github.com/almasix-dev/almasix-permission) `website/` | `almasix-permission-docs` | package docs |
+
+Per docs repo: set `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` Actions secrets, merge the docs workflow, then **Custom domains** → attach the host on that Worker.
+
+**Prism** stays on `docs.almasix.com/prism/` — it is core framework, not a package host.
+
+### Cutover note for `docs.almasix.com`
+
+Replace the grey-cloud `docs` CNAME → `almasix-dev.github.io` with the Proxied record Cloudflare proposes for Worker `almasix-docs`. Disable GitHub Pages once Active. Details: [`almasix/website/CLOUDFLARE.md`](https://github.com/almasix-dev/almasix/blob/main/website/CLOUDFLARE.md).
+
+### Optional: old Digging Deeper paths
+
+Framework Digging Deeper pages `/conduit/` and `/inertia/` are stubs linking to the package hosts. Optional zone Redirect Rules can 301 those paths to `conduit.almasix.com` / `inertia.almasix.com`.
+
+## Hub catalogue
+
+**[almasix.com/packages](https://almasix.com/packages)** links to each package docs host once DNS is attached.
