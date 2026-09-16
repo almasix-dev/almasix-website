@@ -19,8 +19,6 @@ This site is a **static Astro** app served as Worker static assets (not Pages Fu
 
 `almasix.com` and `www.almasix.com` are Active on the Worker.
 
-Leave **`docs.almasix.com`** alone (GitHub Pages / Starlight).
-
 ### www → apex (Redirect Rule — not `_redirects`)
 
 Workers static-asset `_redirects` only allows **relative** URLs and does **not** support domain-level redirects. Absolute `https://www…` rules fail deploy with `Invalid _redirects configuration` / code `100324`.
@@ -57,52 +55,29 @@ npx wrangler deploy   # needs Cloudflare auth
 
 Workers Builds was connected to the repo but there was no Wrangler config, so the check aborted before a real build. `wrangler.jsonc` fixes that preflight.
 
-## Phase 6 — Package subdomains
+## Docs sites (Cloudflare Worker assets)
 
-Package docs currently live on the framework Starlight site (`docs.almasix.com/conduit/`, `/inertia/`, …). Until a package owns its own Pages/Worker project, give it a pretty host that **301s** into those paths.
+All documentation hosts use the same Wrangler static-assets pattern as this hub (not GitHub Pages).
 
-Hub catalogue: **[almasix.com/packages](https://almasix.com/packages)**.
+| Host | Repo | Worker name | Root |
+|------|------|-------------|------|
+| `docs.almasix.com` | [`almasix-dev/almasix`](https://github.com/almasix-dev/almasix) `website/` | `almasix-docs` | framework Starlight (includes Prism) |
+| `conduit.almasix.com` | [`almasix-dev/conduit`](https://github.com/almasix-dev/conduit) `website/` | `almasix-conduit-docs` | package docs |
+| `inertia.almasix.com` | [`almasix-dev/inertia`](https://github.com/almasix-dev/inertia) `website/` | `almasix-inertia-docs` | package docs |
+| `permission.almasix.com` | [`almasix-dev/almasix-permission`](https://github.com/almasix-dev/almasix-permission) `website/` | `almasix-permission-docs` | package docs |
 
-### Ready first
+Per docs repo: set `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` Actions secrets, merge the docs workflow, then **Custom domains** → attach the host on that Worker.
 
-| Host | Redirect target |
-|------|-----------------|
-| `conduit.almasix.com` | `https://docs.almasix.com/conduit/` |
-| `inertia.almasix.com` | `https://docs.almasix.com/inertia/` |
+**Prism** stays on `docs.almasix.com/prism/` — it is core framework, not a package host.
 
-Skip Permission / Sonar until they have real public docs pages.
+### Cutover note for `docs.almasix.com`
 
-### DNS + custom domain (per package)
+Replace the grey-cloud `docs` CNAME → `almasix-dev.github.io` with the Proxied record Cloudflare proposes for Worker `almasix-docs`. Disable GitHub Pages once Active. Details: [`almasix/website/CLOUDFLARE.md`](https://github.com/almasix-dev/almasix/blob/main/website/CLOUDFLARE.md).
 
-1. **Workers & Pages** → the **almasix.com** Worker (this hub) → **Custom domains** → add `conduit.almasix.com` (and later `inertia.almasix.com`). Accept the DNS record Cloudflare proposes (proxied).
-2. Wait until the domain shows **Active** + cert issued.
-3. **Rules** → **Redirect Rules** → **Create rule** (zone `almasix.com`):
+### Optional: old Digging Deeper paths
 
-   **Conduit**
-   - When → **Custom filter expression**:
-     ```
-     http.host eq "conduit.almasix.com"
-     ```
-   - Then → **Dynamic** redirect  
-     - Expression: `concat("https://docs.almasix.com/conduit", http.request.uri.path)`  
-     - Status: **301**  
-     - Preserve query string: **On**
+Framework Digging Deeper pages `/conduit/` and `/inertia/` are stubs linking to the package hosts. Optional zone Redirect Rules can 301 those paths to `conduit.almasix.com` / `inertia.almasix.com`.
 
-   **Inertia** — same pattern with host `inertia.almasix.com` and path prefix `/inertia`.
+## Hub catalogue
 
-4. Verify:
-
-```bash
-curl -I https://conduit.almasix.com/
-# expect 301 Location: https://docs.almasix.com/conduit/
-curl -I https://inertia.almasix.com/
-# expect 301 Location: https://docs.almasix.com/inertia/
-```
-
-### Later — own package sites
-
-When a package ships a dedicated static docs project:
-
-1. Point DNS `CNAME` at that Pages/GitHub hostname (or attach the subdomain on that project instead of the hub Worker).
-2. Remove the hub-Worker custom domain + redirect rule for that host.
-3. Update links on `/packages` if the canonical URL changes.
+**[almasix.com/packages](https://almasix.com/packages)** links to each package docs host once DNS is attached.

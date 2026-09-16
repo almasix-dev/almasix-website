@@ -7,7 +7,7 @@ const ready = [
 		host: 'conduit.almasix.com',
 		pip: 'almasix[conduit]',
 		blurb: 'Livewire-parity reactive components — server-driven UI with almasix.conduit.',
-		docs: 'https://docs.almasix.com/conduit/',
+		docs: 'https://conduit.almasix.com/',
 		github: 'https://github.com/almasix-dev/conduit',
 		pypi: 'https://pypi.org/project/almasix-conduit/',
 	},
@@ -16,20 +16,22 @@ const ready = [
 		host: 'inertia.almasix.com',
 		pip: 'almasix[inertia]',
 		blurb: 'Official Inertia.js adapter for Vue, React, and Svelte — plus Node SSR.',
-		docs: 'https://docs.almasix.com/inertia/',
+		docs: 'https://inertia.almasix.com/',
 		github: 'https://github.com/almasix-dev/inertia',
 		pypi: 'https://pypi.org/project/almasix-inertia/',
+	},
+	{
+		name: 'Permission',
+		host: 'permission.almasix.com',
+		pip: 'almasix-permission',
+		blurb: 'Spatie-style roles and permissions — Gates, middleware, and Prism directives.',
+		docs: 'https://permission.almasix.com/',
+		github: 'https://github.com/almasix-dev/almasix-permission',
+		pypi: 'https://pypi.org/project/almasix-permission/',
 	},
 ];
 
 const soon = [
-	{
-		name: 'Permission',
-		pip: 'almasix-permission',
-		blurb: 'Roles and permissions on PyPI. Package docs page still cooking — use the README for now.',
-		github: 'https://github.com/almasix-dev/almasix-permission',
-		pypi: 'https://pypi.org/project/almasix-permission/',
-	},
 	{
 		name: 'Sonar',
 		pip: '@almasix/sonar',
@@ -42,7 +44,7 @@ const soon = [
 
 <BaseLayout
 	title="Packages"
-	description="First-party Almasix packages — Conduit, Inertia, and more — with docs, install lines, and source."
+	description="First-party Almasix packages — Conduit, Inertia, Permission, and more — with docs, install lines, and source."
 >
 	<main id="main">
 		<section class="page-hero" aria-labelledby="packages-heading">
@@ -50,9 +52,8 @@ const soon = [
 				<p class="page-kicker mono">almasix.com/packages</p>
 				<h1 id="packages-heading">First-party packages</h1>
 				<p>
-					Installable extensions with their own repos. Docs that already ship live under
-					<code class="mono">docs.almasix.com</code>; package hosts like
-					<code class="mono">conduit.almasix.com</code> redirect there once DNS is attached.
+					Installable extensions with their own repos and docs hosts. Prism and the rest of the
+					framework stay on <code class="mono">docs.almasix.com</code>.
 				</p>
 			</div>
 		</section>
@@ -60,7 +61,7 @@ const soon = [
 		<section class="section" aria-labelledby="ready-heading">
 			<div class="wrap">
 				<h2 id="ready-heading">Ready now</h2>
-				<p class="lead">Public docs and PyPI releases — start here.</p>
+				<p class="lead">Public docs sites and PyPI releases — start here.</p>
 				<ul class="pkg-list">
 					{
 						ready.map((pkg) => (
@@ -70,7 +71,7 @@ const soon = [
 									<code class="mono pkg-host">{pkg.host}</code>
 								</div>
 								<p class="pkg-blurb">{pkg.blurb}</p>
-								<pre class="pkg-install"><code>pip install '{pkg.pip}'</code></pre>
+								<pre class="pkg-install"><code>{pkg.pip.includes('[') ? `pip install '${pkg.pip}'` : `pip install ${pkg.pip}`}</code></pre>
 								<div class="pkg-links">
 									<a href={pkg.docs}>Docs →</a>
 									<a href={pkg.github}>GitHub</a>
@@ -87,7 +88,7 @@ const soon = [
 			<div class="wrap">
 				<h2 id="soon-heading">On deck</h2>
 				<p class="lead">
-					Shipped or incubating — package subdomains wait until each has real public docs.
+					Incubating — package subdomains wait until each has real public docs.
 				</p>
 				<ul class="pkg-list pkg-list-soon">
 					{
@@ -116,9 +117,12 @@ const soon = [
 				<h2 id="editors-heading">Editor support</h2>
 				<p class="lead">
 					VS Code / Cursor and JetBrains plugins stay under framework docs — not package hosts.
+					Prism docs live at <code class="mono">docs.almasix.com/prism/</code>.
 				</p>
 				<p class="pkg-editors">
 					<a href="https://docs.almasix.com/editor-setup/">Editor setup →</a>
+					<span aria-hidden="true"> · </span>
+					<a href="https://docs.almasix.com/prism/">Prism →</a>
 					<span aria-hidden="true"> · </span>
 					<a href="https://github.com/almasix-dev/almasix-vscode">VS Code</a>
 					<span aria-hidden="true"> · </span>
