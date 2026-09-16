@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/global.css';
+---
+
+<BaseLayout>
+	<main>
+		<section class="wrap hero" aria-labelledby="hero-heading">
+			<img
+				class="hero-mark"
+				src="/almasix-banner-light.svg"
+				alt="Almasix"
+				width="320"
+				height="72"
+			/>
+			<h1 id="hero-heading">Laravel’s application shape, in async Python.</h1>
+			<p>
+				Routing, validation, Articulate ORM, Prism views, auth, queues, and the Smith CLI —
+				arranged the way you expect, asynchronous all the way down.
+			</p>
+			<div class="cta-row">
+				<a class="btn btn-primary" href="https://docs.almasix.com/installation/">Get started</a>
+				<a class="btn btn-ghost" href="https://docs.almasix.com/">Read the docs</a>
+			</div>
+		</section>
+
+		<section class="section" aria-labelledby="install-heading">
+			<div class="wrap">
+				<h2 id="install-heading">Install once. Scaffold an app.</h2>
+				<p class="lead">
+					The global <code class="mono">almasix</code> tool creates projects; each app then runs
+					<code class="mono">python smith …</code> for day-to-day commands.
+				</p>
+				<div class="install">
+					<code class="mono">pipx install almasix && almasix new blog</code>
+					<a class="btn btn-ghost" href="https://docs.almasix.com/installation/">Installation guide</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="section" aria-labelledby="ecosystem-heading">
+			<div class="wrap">
+				<h2 id="ecosystem-heading">The ecosystem</h2>
+				<p class="lead">
+					One framework core, first-party packages when you need them, and docs that assume no
+					Laravel background.
+				</p>
+				<div class="ecosystem">
+					<article>
+						<h3>Framework</h3>
+						<p>
+							Articulate, Prism, Smith, Chrono, Loupe — the surfaces that ship in
+							<code class="mono">almasix</code>.
+						</p>
+						<a href="https://docs.almasix.com/">docs.almasix.com →</a>
+					</article>
+					<article>
+						<h3>Conduit &amp; Inertia</h3>
+						<p>Reactive components and the official Inertia.js adapter as installable extras.</p>
+						<a href="https://github.com/almasix-dev">Browse packages →</a>
+					</article>
+					<article>
+						<h3>Open source</h3>
+						<p>MIT licensed, built in the open under the almasix-dev organization on GitHub.</p>
+						<a href="https://github.com/almasix-dev/almasix">Star the repo →</a>
+					</article>
+				</div>
+			</div>
+		</section>
+	</main>
+</BaseLayout>
