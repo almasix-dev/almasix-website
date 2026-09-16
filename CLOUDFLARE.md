@@ -57,22 +57,23 @@ Workers Builds was connected to the repo but there was no Wrangler config, so th
 
 ## Docs sites (Cloudflare Worker assets)
 
-All documentation hosts use the same Wrangler static-assets pattern as this hub (not GitHub Pages).
+All documentation hosts use the same pattern as this hub:
 
-| Host | Repo | Worker name | Root |
-|------|------|-------------|------|
-| `docs.almasix.com` | [`almasix-dev/almasix`](https://github.com/almasix-dev/almasix) `website/` | `almasix-docs` | framework Starlight (includes Prism) |
-| `conduit.almasix.com` | [`almasix-dev/conduit`](https://github.com/almasix-dev/conduit) `website/` | `almasix-conduit-docs` | package docs |
-| `inertia.almasix.com` | [`almasix-dev/inertia`](https://github.com/almasix-dev/inertia) `website/` | `almasix-inertia-docs` | package docs |
-| `permission.almasix.com` | [`almasix-dev/almasix-permission`](https://github.com/almasix-dev/almasix-permission) `website/` | `almasix-permission-docs` | package docs |
+- GitHub Actions **builds** the Starlight site (no Cloudflare secrets in GitHub).
+- Cloudflare **Workers Builds** deploys (`npm ci && npm run build` → `npx wrangler deploy`).
 
-Per docs repo: set `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` Actions secrets, merge the docs workflow, then **Custom domains** → attach the host on that Worker.
+| Host | Repo | Worker / project | Root |
+|------|------|------------------|------|
+| `docs.almasix.com` | [`almasix-dev/almasix`](https://github.com/almasix-dev/almasix) | `almasix-docs` | `website/` |
+| `conduit.almasix.com` | [`almasix-dev/conduit`](https://github.com/almasix-dev/conduit) | `almasix-conduit-docs` | `website/` |
+| `inertia.almasix.com` | [`almasix-dev/inertia`](https://github.com/almasix-dev/inertia) | `almasix-inertia-docs` | `website/` |
+| `permission.almasix.com` | [`almasix-dev/almasix-permission`](https://github.com/almasix-dev/almasix-permission) | `almasix-permission-docs` | `website/` |
 
-**Prism** stays on `docs.almasix.com/prism/` — it is core framework, not a package host.
+Per docs site: connect Workers Builds → attach custom domain. **Prism** stays on `docs.almasix.com/prism/` (core).
 
 ### Cutover note for `docs.almasix.com`
 
-Replace the grey-cloud `docs` CNAME → `almasix-dev.github.io` with the Proxied record Cloudflare proposes for Worker `almasix-docs`. Disable GitHub Pages once Active. Details: [`almasix/website/CLOUDFLARE.md`](https://github.com/almasix-dev/almasix/blob/main/website/CLOUDFLARE.md).
+Replace the grey-cloud `docs` CNAME → `almasix-dev.github.io` with the Proxied record for Worker `almasix-docs`. Disable GitHub Pages once Active. Details: [`almasix/website/CLOUDFLARE.md`](https://github.com/almasix-dev/almasix/blob/main/website/CLOUDFLARE.md).
 
 ### Optional: old Digging Deeper paths
 
