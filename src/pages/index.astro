@@ -25,26 +25,54 @@ import '../styles/global.css';
 
 				<figure class="hero-preview">
 					<div class="term term-has-video">
-						<video
-							class="term-video"
-							autoplay
-							muted
-							loop
-							playsinline
-							preload="metadata"
-							poster="/install-demo-poster.jpg"
-							aria-label="Actual install session: pipx install almasix, interactive almasix new myapp with starter kit choices, then smith db:seed and smith serve"
+						<button
+							type="button"
+							class="term-open"
+							data-lightbox-open
+							aria-haspopup="dialog"
+							aria-controls="demo-lightbox"
+							aria-label="Expand install demo video"
 						>
-							<source src="/install-demo.webm" type="video/webm" />
-							<source src="/install-demo.mp4" type="video/mp4" />
-						</video>
+							<video
+								class="term-video"
+								autoplay
+								muted
+								loop
+								playsinline
+								preload="metadata"
+								poster="/install-demo-poster.jpg"
+								aria-hidden="true"
+							>
+								<source src="/install-demo.webm" type="video/webm" />
+								<source src="/install-demo.mp4" type="video/mp4" />
+							</video>
+							<span class="term-expand" aria-hidden="true">Expand</span>
+						</button>
 					</div>
 					<figcaption class="hero-preview-cap">
-						Recorded from a real session — Web kit, Tailwind, SQLite, migrate, seed, serve.
+						Illustrative walkthrough — scaffold, make, migrate, seed, serve. Click to expand.
 					</figcaption>
 				</figure>
 			</div>
 		</section>
+
+		<dialog class="lightbox" id="demo-lightbox" aria-label="Almasix install walkthrough">
+			<div class="lightbox-dialog">
+				<button type="button" class="lightbox-close" data-lightbox-close aria-label="Close">
+					×
+				</button>
+				<video
+					class="lightbox-video"
+					controls
+					playsinline
+					preload="none"
+					poster="/install-demo-poster.jpg"
+				>
+					<source src="/install-demo.webm" type="video/webm" />
+					<source src="/install-demo.mp4" type="video/mp4" />
+				</video>
+			</div>
+		</dialog>
 
 		<section class="band band-ink" aria-labelledby="promise-heading" data-reveal>
 			<div class="wrap band-split">
@@ -197,15 +225,54 @@ import '../styles/global.css';
 		document.documentElement.classList.add('motion');
 	}
 
-	const video = document.querySelector('.term-video');
-	if (video instanceof HTMLVideoElement) {
+	const heroVideo = document.querySelector('.term-video');
+	if (heroVideo instanceof HTMLVideoElement) {
 		if (reduce) {
-			video.removeAttribute('autoplay');
-			video.pause();
+			heroVideo.removeAttribute('autoplay');
+			heroVideo.pause();
 		} else {
-			video.play().catch(() => {});
+			heroVideo.play().catch(() => {});
 		}
 	}
+
+	const lightbox = document.querySelector('#demo-lightbox');
+	const lightboxVideo = document.querySelector('.lightbox-video');
+	const openBtn = document.querySelector('[data-lightbox-open]');
+	const closeBtn = document.querySelector('[data-lightbox-close]');
+
+	const openLightbox = () => {
+		if (!(lightbox instanceof HTMLDialogElement)) return;
+		lightbox.showModal();
+		if (heroVideo instanceof HTMLVideoElement) heroVideo.pause();
+		if (lightboxVideo instanceof HTMLVideoElement) {
+			lightboxVideo.currentTime = heroVideo instanceof HTMLVideoElement ? heroVideo.currentTime : 0;
+			lightboxVideo.muted = false;
+			lightboxVideo.play().catch(() => {});
+		}
+	};
+
+	const closeLightbox = () => {
+		if (!(lightbox instanceof HTMLDialogElement)) return;
+		if (lightboxVideo instanceof HTMLVideoElement) {
+			lightboxVideo.pause();
+		}
+		lightbox.close();
+		if (heroVideo instanceof HTMLVideoElement && !reduce) {
+			heroVideo.play().catch(() => {});
+		}
+	};
+
+	openBtn?.addEventListener('click', openLightbox);
+	closeBtn?.addEventListener('click', closeLightbox);
+	lightbox?.addEventListener('click', (event) => {
+		if (event.target === lightbox) closeLightbox();
+	});
+	lightbox?.addEventListener('close', () => {
+		if (lightboxVideo instanceof HTMLVideoElement) lightboxVideo.pause();
+		if (heroVideo instanceof HTMLVideoElement && !reduce) {
+			heroVideo.play().catch(() => {});
+		}
+	});
 
 	if (!reduce) {
 		const reveals = document.querySelectorAll('[data-reveal]');
