@@ -61,6 +61,29 @@ const ready = [
 		github: 'https://github.com/almasix-dev/almasix-permission',
 		pypi: 'https://pypi.org/project/almasix-permission/',
 	},
+	{
+		name: 'Orbit',
+		tag: 'Admin',
+		accent: '#c2410c',
+		host: 'orbit.almasix.com',
+		install: 'pip install almasix-orbit',
+		blurb: 'Filament-class panels, forms, tables, and actions on Conduit + Alpine.',
+		snippetFile: 'app/orbit/admin/panel.py',
+		snippet: `<span class="od-k">from</span> <span class="od-t">almasix.orbit</span> <span class="od-k">import</span> <span class="od-t">Panel</span>, <span class="od-t">PanelRegistry</span>
+
+<span class="od-k">def</span> <span class="od-f">register_admin_panel</span>(registry: <span class="od-t">PanelRegistry</span>) -> <span class="od-t">Panel</span>:
+    panel = (
+        <span class="od-t">Panel</span>.<span class="od-f">make</span>(<span class="od-s">"admin"</span>)
+        .<span class="od-f">path</span>(<span class="od-s">"admin"</span>)
+        .<span class="od-f">brand_name</span>(<span class="od-s">"Orbit"</span>)
+        .<span class="od-f">discover_panel_dirs</span>()
+    )
+    registry.<span class="od-f">register</span>(panel)
+    <span class="od-k">return</span> panel`,
+		docs: 'https://orbit.almasix.com/',
+		github: 'https://github.com/almasix-dev/almasix-orbit',
+		pypi: 'https://pypi.org/project/almasix-orbit/',
+	},
 ];
 
 const soon = [
@@ -78,7 +101,7 @@ const soon = [
 
 <BaseLayout
 	title="Packages"
-	description="First-party Almasix packages — Conduit, Inertia, Permission, and more — with docs, install lines, and source."
+	description="First-party Almasix packages — Conduit, Inertia, Permission, Orbit, and more — with docs, install lines, and source."
 >
 	<main id="main">
 		<section class="page-hero" aria-labelledby="packages-heading">
