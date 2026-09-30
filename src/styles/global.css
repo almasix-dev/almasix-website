@@ -1527,6 +1527,71 @@ html.motion [data-reveal].is-in [data-reveal-child] {
 	}
 }
 
+.plugin-section + .plugin-section {
+	padding-top: 0;
+}
+
+.plugin-grid {
+	list-style: none;
+	margin: 1.5rem 0 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+	gap: 1rem;
+}
+
+.plugin-card {
+	display: flex;
+	flex-direction: column;
+	gap: 0.45rem;
+	height: 100%;
+	padding: 1.1rem 1.15rem 1.2rem;
+	border: 1px solid var(--line);
+	border-radius: 0.9rem;
+	background: var(--paper);
+	color: inherit;
+	text-decoration: none;
+}
+
+.plugin-card:hover {
+	border-color: var(--orange);
+	color: inherit;
+}
+
+.plugin-card h3 {
+	margin: 0;
+	font-size: 1.2rem;
+}
+
+.plugin-card p {
+	margin: 0;
+	color: var(--muted);
+}
+
+.plugin-kicker {
+	margin: 0;
+	font-size: 0.75rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--orange-deep);
+}
+
+.plugin-meta {
+	margin-top: auto;
+	padding-top: 0.75rem;
+	font-size: 0.78rem;
+	color: var(--ink-soft);
+}
+
+.plugin-empty {
+	color: var(--muted);
+}
+
+.plugin-install code {
+	display: inline-block;
+	padding: 0.35rem 0.6rem;
+}
+
 @media (max-width: 640px) {
 	.nav a:not(.nav-cta) {
 		display: none;

@@ -43,6 +43,10 @@ curl -I https://almasix.com/
 # expect 200
 ```
 
+## Orbit plugins
+
+`/plugins/` reads `https://orbit.almasix.com/main/plugins/feed.json` while the site builds. A plugin listed on Orbit shows up here on the next deploy. To deploy this site when an Orbit listing merges, add a Workers Builds deploy hook for this Worker (branch `main`) and store the URL as `ALMASIX_SITE_DEPLOY_HOOK` on `almasix-dev/orbit-plugins`. The listing workflow posts that hook next to the Orbit docs hook.
+
 ## Local
 
 ```bash

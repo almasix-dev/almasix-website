@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { loadCatalog } from '../../data/plugins.mjs';
+
+const strict = import.meta.env.PROD;
+const { framework, orbit } = await loadCatalog({ strict });
+const groups = [
+	{ id: 'almasix', title: 'Almasix', lead: 'Plugins that ship with the framework ecosystem.', items: framework },
+	{
+		id: 'orbit',
+		title: 'Orbit',
+		lead: 'Published on the Orbit marketplace. A listing there appears here on the next build of this site.',
+		items: orbit,
+	},
+];
+---
+
+<BaseLayout
+	title="Plugins"
+	description="Almasix plugins and every published Orbit plugin, in one catalog."
+>
+	<main id="main">
+		<section class="page-hero" aria-labelledby="plugins-heading">
+			<div class="wrap page-hero-inner">
+				<p class="page-kicker mono">almasix.com/plugins</p>
+				<h1 id="plugins-heading">Plugins</h1>
+				<p>
+					Framework plugins, plus every plugin published on
+					<a href="https://orbit.almasix.com/main/plugins/">Orbit</a>. Submitting a listing to Orbit
+					is enough — it is not submitted here again.
+				</p>
+			</div>
+		</section>
+
+		{
+			groups.map((group) => (
+				<section class="section plugin-section" aria-labelledby={`${group.id}-heading`}>
+					<div class="wrap">
+						<h2 id={`${group.id}-heading`}>{group.title}</h2>
+						<p class="lead">{group.lead}</p>
+						{
+							group.items.length === 0 ? (
+								<p class="plugin-empty">No {group.title} plugins were available for this build.</p>
+							) : (
+								<ul class="plugin-grid">
+									{group.items.map((plugin) => (
+										<li>
+											<a class="plugin-card" href={plugin.listingUrl}>
+												<p class="plugin-kicker mono">
+													{plugin.source === 'orbit' ? 'Orbit' : 'Almasix'}
+													{plugin.official ? ' · Official' : ''}
+												</p>
+												<h3>{plugin.name}</h3>
+												<p>{plugin.summary}</p>
+												<p class="plugin-meta mono">
+													{plugin.install ?? plugin.price}
+													{plugin.stars != null ? ` · ${plugin.stars} stars` : ''}
+												</p>
+											</a>
+										</li>
+									))}
+								</ul>
+							)
+						}
+					</div>
+				</section>
+			))
+		}
+	</main>
+</BaseLayout>
