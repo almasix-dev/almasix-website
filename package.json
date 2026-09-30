@@ -1,7 +1,7 @@
 {
   "name": "almasix-website",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Almasix ecosystem website — marketing hub for almasix.com",
   "scripts": {
@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "deploy": "npm run build && wrangler deploy",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "test": "node --test scripts/plugins.test.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

@@ -1,6 +1,7 @@
 # Almasix ecosystem website
 
 Marketing hub for **[almasix.com](https://almasix.com)** — framework story, [packages](https://almasix.com/packages),
+[plugins](https://almasix.com/plugins/) (framework plugins plus every Orbit listing),
 and links into [docs.almasix.com](https://docs.almasix.com).
 
 Framework developer docs stay in [`almasix-dev/almasix`](https://github.com/almasix-dev/almasix)

@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { loadCatalog } from '../../data/plugins.mjs';
+
+export async function getStaticPaths() {
+	const strict = import.meta.env.PROD;
+	const { all } = await loadCatalog({ strict });
+	return all
+		.filter((plugin) => plugin.source === 'almasix')
+		.map((plugin) => ({
+			params: { slug: plugin.slug },
+			props: { plugin },
+		}));
+}
+
+const { plugin } = Astro.props;
+---
+
+<BaseLayout title={plugin.name} description={plugin.summary}>
+	<main id="main">
+		<section class="page-hero" aria-labelledby="plugin-heading">
+			<div class="wrap page-hero-inner">
+				<p class="page-kicker mono">
+					<a href="/plugins/">Plugins</a> · {plugin.source === 'orbit' ? 'Orbit' : 'Almasix'}
+				</p>
+				<h1 id="plugin-heading">{plugin.name}</h1>
+				<p>{plugin.summary}</p>
+				{
+					plugin.install && (
+						<p class="plugin-install mono">
+							<code>{plugin.install}</code>
+						</p>
+					)
+				}
+				<div class="pkg-links">
+					{plugin.docs && <a href={plugin.docs}>Docs →</a>}
+					{plugin.github && <a href={plugin.github}>GitHub</a>}
+					{plugin.pypi && <a href={plugin.pypi}>PyPI</a>}
+					{
+						plugin.source === 'orbit' && (
+							<a href={plugin.listingUrl}>Orbit listing →</a>
+						)
+					}
+				</div>
+			</div>
+		</section>
+	</main>
+</BaseLayout>
